@@ -40,6 +40,6 @@
 	color:#ccc;
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
 	height: 30px;
 }
