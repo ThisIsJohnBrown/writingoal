@@ -73,7 +73,7 @@ STATIC_ROOT = '/Users/johnbrown/Trash.old/src/web-public/writingtime/staticfiles
 STATIC_URL = '/static/'
 
 # Additional locations of static files
-MAIN_STATIC = '/Users/johnbrown/Trash.old/src/web-public/writingtime/writingtime/static/'
+MAIN_STATIC = os.path.join(full_path, 'static/')
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
