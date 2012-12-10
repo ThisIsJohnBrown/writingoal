@@ -1,0 +1,41 @@
+.progress {
+	margin-bottom: 0px;
+}
+
+.inset {
+	margin-left:30px;
+}
+
+.data-holder {
+	background-color:#ccc;
+}
+
+.data-holder-row {
+	padding-top:20px;
+	padding-bottom:20px;
+}
+
+.goal-title {
+	margin-left: 0;
+}
+
+.new-goal {
+	margin-bottom:20px;
+}
+
+.goal-bar {
+	margin-bottom:20px;
+	cursor: pointer;
+}
+
+.entry-list-header {
+	cursor: pointer;
+}
+
+.user {
+	float:right;
+}
+
+.logout:link, .logout:hover, .logout:visited {
+	color:#ccc;
+}

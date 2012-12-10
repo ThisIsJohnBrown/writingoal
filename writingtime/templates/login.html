@@ -1,0 +1,26 @@
+{% extends "account/base.html" %}
+
+
+{% block content %}
+    
+<h1>Sign in</h1>
+
+{% if not user.is_authenticated %}
+
+{% load socialaccount %}
+{% providers_media_js %}
+<p>Sign in with <a href="{% provider_login_url "facebook" method="js_sdk" %}">Facebook</a>,</p>
+
+<p>or the more traditional route.</p>
+
+<form action="{% url login %}" method="POST">
+	{% csrf_token %}
+    <input id="username-field" name="username" type="text" />
+    <input id="password-field" name="password" type="password" />
+    <button type="submit">Login</button>
+</form>
+
+{% endif %}    
+
+{% endblock %}
+

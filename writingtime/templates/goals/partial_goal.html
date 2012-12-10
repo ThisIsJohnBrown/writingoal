@@ -1,0 +1,42 @@
+<div data-toggle="collapse" class="goal-bar" data-target="#collapse{{ goal.id }}">
+  <div class="span2 goal-title">{{goal.name}}</div>
+  <div class="progress progress-striped">
+    {% if goal.percent_goal > goal.percent_actual %}
+      <div class="bar" style="width: {{goal.percent_actual}}%;"></div>
+      <div class="bar bar-danger" style="width: {{goal.percent_diff}}%;"></div>
+    {% else %}
+      <div class="bar" style="width: {{goal.percent_goal}}%;"></div>
+      <div class="bar bar-success" style="width: {{goal.percent_diff}}%;"></div>
+    {% endif %}
+  </div>
+</div>
+ 
+<div id="collapse{{ goal.id }}" class="collapse {% if collapse %}in {% endif %}data-holder">
+  <div class="row data-holder-row">
+    <div class="span6">
+      <p>Prologue</p>
+      <p class="inset">{{ goal.num_words }} words in {{ goal.days }} days</p>
+      <p class="inset">{{ goal.average }} words per day</p>
+
+      <p>The Story So Far</p>
+      <p class="inset">{{ goal.num_written }} words written in {{ goal.days_progress }} days</p>
+      <p class="inset">{{ goal.average_written }} words per day, {{goal.average_entries}} entries per day</p>
+
+      <p>Race to the Final Chapter</p>
+      <p class="inset">{{ goal.num_remaining }} words and {{ goal.days_remaining }} days left</p>
+      <p class="inset">{{ goal.average_remaining }} words per day</p>
+    </div>
+    <div class="span6">
+      <div class="input-append">
+        <input class="span2 entry-add" type="text">
+        <button class="btn entry-add" type="button" data-input-class="input.entry-add" data-goal-id="{{goal.id}}" data-entry-url="{% url entry_create %}" data-entry-list=".entry-list{{goal.id}}">Add words!</button>
+      </div>
+      <p class="entry-list-header"><i class="icon-play"></i> Entries</p>
+      <div class="entry-list collapse{% if collapse %} in{% endif %} ">
+	      {% for entry in goal.entries %}
+	        <p>{{ entry.get_html }}</p>
+	      {% endfor %}
+  	  </div>
+    </div>
+  </div>
+</div>

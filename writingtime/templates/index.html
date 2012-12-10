@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+  <div class="row">
+    <a href="#modal-create-goal" role="button" class="span2 btn btn-large btn-success right new-goal" data-toggle="modal">+ New Goal</a>
+  </div>
+   
+  <!-- Modal -->
+  <div id="modal-create-goal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-goal" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="modal-create-goal">Create a new goal</h3>
+    </div>
+    <div class="modal-body">
+      <form class="create-goal" action="{% url goal_create %}">
+        <fieldset>
+          <input type="text" name="goal-name" placeholder="Goal Name">  <input type="text" name="num-words" placeholder="Word count" class="input-small">
+          <div class="clear"></div>
+          <input type="text" name="start-date" placeholder="Start Date" class="input-small">
+          <div class="clear"></div>
+          <input type="text" name="end-date" placeholder="End Date" class="input-small"> or <input type="text" name="num-days" placeholder="# of days" class="input-small">
+          <div class="clear"></div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary submit-create-goal">Create</button>
+    </div>
+  </div>
+
+  {% if goals %}
+
+    {% for goal in goals %}
+      <div class="goal-holder" data-goal="{{goal.id}}">
+      {% include "goals/partial_goal.html" %}
+      </div>
+    {% endfor %}  
+
+  {% endif %}
+
+{% else %}
+
+<h3>Log in</h3>
+<form action="/" method="POST">
+  {% csrf_token %}
+    <input id="username-field" name="username" type="text" placeholder="username" />
+    <input id="password-field" name="password" type="password" placeholder="password"/>
+    <button type="submit">Login</button>
+</form>
+
+{% endif %}
+
+{% endblock %}
