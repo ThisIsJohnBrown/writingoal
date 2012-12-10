@@ -14,15 +14,15 @@
 <div id="collapse{{ goal.id }}" class="collapse {% if collapse %}in {% endif %}data-holder">
   <div class="row data-holder-row">
     <div class="span6">
-      <p>Prologue</p>
+      <p>Summary</p>
       <p class="inset">{{ goal.num_words }} words in {{ goal.days }} days</p>
       <p class="inset">{{ goal.average }} words per day</p>
 
-      <p>The Story So Far</p>
+      <p>Progress</p>
       <p class="inset">{{ goal.num_written }} words written in {{ goal.days_progress }} days</p>
       <p class="inset">{{ goal.average_written }} words per day, {{goal.average_entries}} entries per day</p>
 
-      <p>Race to the Final Chapter</p>
+      <p>To Finish</p>
       <p class="inset">{{ goal.num_remaining }} words and {{ goal.days_remaining }} days left</p>
       <p class="inset">{{ goal.average_remaining }} words per day</p>
     </div>
