@@ -39,3 +39,7 @@
 .logout:link, .logout:hover, .logout:visited {
 	color:#ccc;
 }
+
+input[type="text"] {
+	height: 30px;
+}

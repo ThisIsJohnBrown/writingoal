@@ -18,7 +18,7 @@ import math
 def index(request):
     if request.user.is_authenticated():
         goals = Goal.objects.all().filter(user=request.user)
-
+        print goals
         for goal in goals:
             goal.entries = GoalEntry.objects.all().filter(goal=goal).order_by('-entry_date')
             goal.num_written = 0

@@ -29,14 +29,16 @@
     <div class="span6">
       <div class="input-append">
         <input class="span2 entry-add" type="text">
-        <button class="btn entry-add" type="button" data-input-class="input.entry-add" data-goal-id="{{goal.id}}" data-entry-url="{% url entry_create %}" data-entry-list=".entry-list{{goal.id}}">Add words!</button>
+        <button class="btn entry-add btn-success" type="button" data-input-class="input.entry-add" data-goal-id="{{goal.id}}" data-entry-url="{% url entry_create %}" data-entry-list=".entry-list{{goal.id}}">Add words!</button>
       </div>
-      <p class="entry-list-header"><i class="icon-play"></i> Entries</p>
-      <div class="entry-list collapse{% if collapse %} in{% endif %} ">
-	      {% for entry in goal.entries %}
-	        <p>{{ entry.get_html }}</p>
-	      {% endfor %}
-  	  </div>
+      {% if goal.entries %}
+	      <p class="entry-list-header"><i class="icon-play"></i> Entries</p>
+	      <div class="entry-list collapse{% if collapse %} in{% endif %} ">
+		      {% for entry in goal.entries %}
+		        <p>{{ entry.get_html }}</p>
+		      {% endfor %}
+	  	  </div>
+  	  {% endif %}
     </div>
   </div>
 </div>
