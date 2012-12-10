@@ -32,7 +32,7 @@ def index(request):
             num_entries = goal.entries.count()
             if num_entries:
                 num_entries = float(num_entries)
-            goal.average_entries = round(num_entries)/goal.days_progress, 2)
+            goal.average_entries = round(num_entries/goal.days_progress, 2)
             goal.average_written = goal.num_written/goal.days_progress
             goal.num_remaining = goal.num_words - goal.num_written
             goal.average_remaining = goal.num_remaining/goal.days_remaining
