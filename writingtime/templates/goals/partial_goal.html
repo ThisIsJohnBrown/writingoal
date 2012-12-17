@@ -2,11 +2,11 @@
   <div class="span2 goal-title"><span class="btn">{{goal.name}}</span></div>
   <div class="progress progress-striped">
     {% if goal.percent_goal > goal.percent_actual %}
-      <div class="bar" style="width: {{goal.percent_actual}}%;"></div>
-      <div class="bar bar-danger" style="width: {{goal.percent_diff}}%;"></div>
+      <div class="bar" style="width: {{goal.percent_actual}}%;" rel="tooltip" title="{{goal.num_written}} words"></div>
+      <div class="bar bar-danger" style="width: {{goal.percent_diff}}%;" rel="tooltip" title="{{goal.words_behind}} words behind"></div>
     {% else %}
-      <div class="bar" style="width: {{goal.percent_goal}}%;"></div>
-      <div class="bar bar-success" style="width: {{goal.percent_diff}}%;"></div>
+      <div class="bar" style="width: {{goal.percent_goal}}%;" rel="tooltip" title="{{goal.num_written}} words"></div>
+      <div class="bar bar-success" style="width: {{goal.percent_diff}}%;" rel="tooltip" title="{{goal.words_behind}} words ahead"></div>
     {% endif %}
   </div>
 </div>

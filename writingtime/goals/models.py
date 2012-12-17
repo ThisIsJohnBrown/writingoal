@@ -83,6 +83,12 @@ class Goal(models.Model):
 	def percent_diff(self):
 		return math.fabs(self.percent_actual() - self.percent_goal())
 
+	def words_behind(self):
+		return (self.average()*self.days_progress()) - self.num_written()
+
+	def words_ahead(self):
+		return self.num_written() - (self.average()*self.days_progress())
+
 	'''
 	goal.num_written = 0
 

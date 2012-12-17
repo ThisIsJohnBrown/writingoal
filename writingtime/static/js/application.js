@@ -1,5 +1,6 @@
 $(function() {
 	$('form input[name="tz"]').val(new Date().getTimezoneOffset());
+	$('*[rel="tooltip"]').tooltip();
 
 	$('input[name="start-date"]').datepicker();
 	$('input[name="end-date"]').datepicker();
