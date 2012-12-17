@@ -102,18 +102,15 @@ def entry_create(request):
             entry.num_words = request.POST['num-words']
             entry.entry_date = datetime.datetime.fromtimestamp(float(request.POST['tz'])).replace(tzinfo=utc)
             entry.save()
-            response_data['result'] = 'success'
-            response_data['message'] = 'Entry created - %s' % entry.id
-            response_data['html'] = entry.get_html()
+            goal = Goal.objects.all().get(id=entry.goal.id)
+            return render_to_response('goals/partial_goal.html', locals(), context_instance=RequestContext(request))
         except:
             response_data['result'] = 'error'
             response_data['message'] = 'Problem creating entry'
     else:
         response_data['result'] = 'error'
         response_data['message'] = 'Needs POST data'
-
-    goal = Goal.objects.all().get(goal=entry.goal)
-    return render_to_response('goals/partial_goal.html', locals(), context_instance=RequestContext(request))
+    return HttpResponse(json.dumps(response_data), mimetype='application/json')
 
 @csrf_exempt
 def entry_update(request):

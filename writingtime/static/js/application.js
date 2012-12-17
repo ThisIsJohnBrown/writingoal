@@ -72,7 +72,6 @@ $(function() {
 	$('.submit-delete-goal').live('click', function(e) {
 		e.preventDefault();
 		var that = $(this);
-		console.log($(this).data());
 		$.ajax({
 			'url': '/goals/delete/',
 			'type': 'POST',

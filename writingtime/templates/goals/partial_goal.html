@@ -37,8 +37,8 @@
     <div class="span5 entries">
       {% if goal.days_progress >= 0 %}
         <div class="input-append">
-          <input class="span2 entry-add" type="text">
-          <button class="btn entry-add btn-success" type="button" data-input-class="input.entry-add" data-goal-id="{{goal.id}}" data-entry-url="{% url entry_create %}" data-entry-list=".entry-list{{goal.id}}">Add words!</button>
+          <input class="span2 entry-add-{{goal.id}}" type="text">
+          <button class="btn entry-add btn-success" type="button" data-input-class="input.entry-add-{{goal.id}}" data-goal-id="{{goal.id}}" data-entry-url="{% url entry_create %}" data-entry-list=".entry-list{{goal.id}}">Add words!</button>
         </div>
       
         {% if goal.entries %}
