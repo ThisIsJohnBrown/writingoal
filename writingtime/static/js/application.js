@@ -113,6 +113,7 @@ $(function() {
 		for (clas in classes) {
 			$('.goal-holder[data-goal="' + goalHolder + '"]').find(classes[clas]).addClass('in')
 		}
+		$('*[rel="tooltip"]').tooltip();
 	}
 
 	function dayToggle(day) {

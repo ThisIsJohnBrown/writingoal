@@ -5,8 +5,8 @@
       <div class="bar" style="width: {{goal.percent_actual}}%;" rel="tooltip" title="{{goal.num_written}} words"></div>
       <div class="bar bar-danger" style="width: {{goal.percent_diff}}%;" rel="tooltip" title="{{goal.words_behind}} words behind"></div>
     {% else %}
-      <div class="bar" style="width: {{goal.percent_goal}}%;" rel="tooltip" title="{{goal.num_written}} words"></div>
-      <div class="bar bar-success" style="width: {{goal.percent_diff}}%;" rel="tooltip" title="{{goal.words_behind}} words ahead"></div>
+      <div class="bar" style="width: {{goal.percent_goal}}%;" rel="tooltip" title="{{goal.words_goal}} words"></div>
+      <div class="bar bar-success" style="width: {{goal.percent_diff}}%;" rel="tooltip" title="{{goal.words_ahead}} words ahead"></div>
     {% endif %}
   </div>
 </div>

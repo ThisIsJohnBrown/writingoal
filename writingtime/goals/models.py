@@ -89,6 +89,9 @@ class Goal(models.Model):
 	def words_ahead(self):
 		return self.num_written() - (self.average()*self.days_progress())
 
+	def words_goal(self):
+		return self.num_written() - self.words_ahead()
+
 	'''
 	goal.num_written = 0
 
