@@ -43,6 +43,7 @@ input[type="text"], input[type="password"] {
 	.data-holder {
 		background-color:#ccc;
 		margin-bottom: 20px;
+		@include border-radius(5px);
 
 		i {
 			color: #666;

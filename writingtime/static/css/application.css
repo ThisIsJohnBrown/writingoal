@@ -1192,42 +1192,48 @@ input[type="text"], input[type="password"] {
 .goal-holder .data-holder {
   background-color: #ccc;
   margin-bottom: 20px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
 }
-/* line 47, ../sass/application.scss */
+/* line 48, ../sass/application.scss */
 .goal-holder .data-holder i {
   color: #666;
 }
-/* line 49, ../sass/application.scss */
+/* line 50, ../sass/application.scss */
 .goal-holder .data-holder i:hover {
   text-decoration: none;
   color: #000;
 }
-/* line 55, ../sass/application.scss */
+/* line 56, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row {
   padding-top: 20px;
   padding-bottom: 20px;
 }
-/* line 59, ../sass/application.scss */
+/* line 60, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .summary {
   padding-left: 60px;
 }
-/* line 62, ../sass/application.scss */
+/* line 63, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .summary p {
   line-height: 10px;
 }
-/* line 64, ../sass/application.scss */
+/* line 65, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .summary p.title {
   margin-top: 30px;
 }
-/* line 68, ../sass/application.scss */
+/* line 69, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .summary p.inset {
   margin-left: 30px;
 }
-/* line 75, ../sass/application.scss */
+/* line 76, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-header {
   cursor: pointer;
 }
-/* line 78, ../sass/application.scss */
+/* line 79, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-header .icon-play {
   -moz-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
@@ -1235,7 +1241,7 @@ input[type="text"], input[type="password"] {
   -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
-/* line 82, ../sass/application.scss */
+/* line 83, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-header.expanded .icon-play {
   -moz-transform: rotate(90deg);
   -o-transform: rotate(90deg);
@@ -1243,41 +1249,41 @@ input[type="text"], input[type="password"] {
   -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
 }
-/* line 87, ../sass/application.scss */
+/* line 88, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-date {
   margin-left: 10px;
 }
-/* line 91, ../sass/application.scss */
+/* line 92, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .words {
   text-align: right;
 }
-/* line 94, ../sass/application.scss */
+/* line 95, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .words .hidden {
   display: none;
 }
-/* line 98, ../sass/application.scss */
+/* line 99, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .words input {
   width: 100%;
   text-align: right;
 }
-/* line 103, ../sass/application.scss */
+/* line 104, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .time {
   padding-left: 20px;
 }
-/* line 106, ../sass/application.scss */
+/* line 107, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .progress {
   margin-bottom: 0px;
 }
-/* line 109, ../sass/application.scss */
+/* line 110, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-day-header {
   cursor: pointer;
   margin-bottom: 5px;
 }
-/* line 113, ../sass/application.scss */
+/* line 114, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-day-header:hover {
   background-color: #ddd;
 }
-/* line 117, ../sass/application.scss */
+/* line 118, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-day-header .icon-play {
   -moz-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
@@ -1285,23 +1291,23 @@ input[type="text"], input[type="password"] {
   -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
-/* line 123, ../sass/application.scss */
+/* line 124, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .day .icon-check {
   color: #00B31B;
 }
-/* line 125, ../sass/application.scss */
+/* line 126, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .day .icon-check:hover {
   color: #00D420;
 }
-/* line 129, ../sass/application.scss */
+/* line 130, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .day .icon-remove-sign {
   color: #960202;
 }
-/* line 131, ../sass/application.scss */
+/* line 132, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .day .icon-remove-sign:hover {
   color: #C40000;
 }
-/* line 137, ../sass/application.scss */
+/* line 138, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .days {
   margin-bottom: 20px;
 }
