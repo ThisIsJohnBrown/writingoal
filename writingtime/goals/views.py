@@ -29,11 +29,55 @@ def goal_create(request):
             goal.end_date = datetime.datetime(int(end[2]), int(end[0]), int(end[1]))
 
             goal.save()
-            response_data['result'] = 'success'
-            response_data['message'] = 'Goal created - %s' % goal.id
+            goal = Goal.objects.get(id=goal.id)
+            return render_to_response('goals/partial_goal.html', locals(), context_instance=RequestContext(request))
         except:
             response_data['result'] = 'error'
             response_data['message'] = 'Problem creating goal'
+    else:
+        response_data['result'] = 'error'
+        response_data['message'] = 'Needs POST data'
+
+    return HttpResponse(json.dumps(response_data), mimetype='application/json')
+
+@csrf_exempt
+def goal_delete(request):
+    response_data = {}
+    if request.POST:
+        try:
+            goal = Goal.objects.get(id=request.POST['goal-id'])
+            goal.delete()
+            response_data['result'] = 'success'
+            response_data['message'] = 'Entry deleted'
+        except:
+            response_data['result'] = 'error'
+            response_data['message'] = 'Problem deleting goal'
+    else:
+        response_data['result'] = 'error'
+        response_data['message'] = 'Needs POST data'
+
+    return HttpResponse(json.dumps(response_data), mimetype='application/json')
+
+@csrf_exempt
+def goal_update(request):
+    response_data = {}
+    if request.POST:
+        try:
+            goal = Goal.objects.get(id=request.POST['goal-id'])
+            goal.name = request.POST['goal-name']
+            goal.num_words = request.POST['num-words']
+            start = string.split(request.POST['start-date'], '/')
+            end = string.split(request.POST['end-date'], '/')
+
+            goal.start_date = datetime.datetime(int(start[2]), int(start[0]), int(start[1]))
+            goal.end_date = datetime.datetime(int(end[2]), int(end[0]), int(end[1]))
+
+            goal.save()
+            goal = Goal.objects.get(id=request.POST['goal-id'])
+            return render_to_response('goals/partial_goal.html', locals(), context_instance=RequestContext(request))
+        except:
+            response_data['result'] = 'error'
+            response_data['message'] = 'Problem updating goal'
     else:
         response_data['result'] = 'error'
         response_data['message'] = 'Needs POST data'
@@ -56,7 +100,7 @@ def entry_create(request):
             entry = GoalEntry()
             entry.goal = Goal.objects.all().get(id=request.POST['goal-id'])
             entry.num_words = request.POST['num-words']
-            entry.entry_date = datetime.datetime.utcnow().replace(tzinfo=utc)
+            entry.entry_date = datetime.datetime.fromtimestamp(float(request.POST['tz'])).replace(tzinfo=utc)
             entry.save()
             response_data['result'] = 'success'
             response_data['message'] = 'Entry created - %s' % entry.id
@@ -68,22 +112,43 @@ def entry_create(request):
         response_data['result'] = 'error'
         response_data['message'] = 'Needs POST data'
 
-    collapse = True
     goal = Goal.objects.all().get(goal=entry.goal)
-    goal.entries = GoalEntry.objects.all().filter(goal=goal).order_by('-entry_date')
-    goal.num_written = 0
-    for entry in goal.entries:
-        goal.num_written += entry.num_words
-    
-    goal.days = (goal.end_date - goal.start_date).days
-    goal.days_remaining = (goal.end_date - datetime.datetime.utcnow().replace(tzinfo=utc)).days
-    goal.days_progress = goal.days - goal.days_remaining
-    goal.average = goal.num_words / goal.days
-    goal.average_entries = round(float(goal.entries.count())/goal.days_progress, 2)
-    goal.average_written = goal.num_written/goal.days_progress
-    goal.num_remaining = goal.num_words - goal.num_written
-    goal.average_remaining = goal.num_remaining/goal.days_remaining
-    goal.percent_actual = int(float(goal.num_written)/goal.num_words*100)
-    goal.percent_goal = int(float(goal.average*goal.days_progress)/goal.num_words*100)
-    goal.percent_diff = math.fabs(goal.percent_actual - goal.percent_goal)
     return render_to_response('goals/partial_goal.html', locals(), context_instance=RequestContext(request))
+
+@csrf_exempt
+def entry_update(request):
+    response_data = {}
+    if request.POST:
+        try:
+            entry = GoalEntry.objects.get(id=request.POST['entry-id'])
+            entry.num_words = request.POST['num-words']
+            entry.save()
+
+            goal = entry.goal
+            return render_to_response('goals/partial_goal.html', locals(), context_instance=RequestContext(request))
+        except:
+            response_data['result'] = 'error'
+            response_data['message'] = 'Problem updating entry'
+    else:
+        response_data['result'] = 'error'
+        response_data['message'] = 'Needs POST data'
+    return HttpResponse(json.dumps(response_data), mimetype='application/json')
+
+@csrf_exempt
+def entry_delete(request):
+    response_data = {}
+    if request.POST:
+        try:
+            entry = GoalEntry.objects.get(id=request.POST['entry-id'])
+            goal = entry.goal
+            entry.delete()
+
+            goal = entry.goal
+            return render_to_response('goals/partial_goal.html', locals(), context_instance=RequestContext(request))
+        except:
+            response_data['result'] = 'error'
+            response_data['message'] = 'Problem deleting entry'
+    else:
+        response_data['result'] = 'error'
+        response_data['message'] = 'Needs POST data'
+    return HttpResponse(json.dumps(response_data), mimetype='application/json')

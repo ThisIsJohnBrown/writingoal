@@ -1,0 +1,143 @@
+@import "all";
+@import "font-awesome";
+
+.navbar {
+	.logo-blue {
+		color: #08C;
+	}
+
+	.user {
+		float:right;
+		margin-top: 8px;
+
+		.logout:link, .logout:hover, .logout:visited {
+			color:#999;
+			margin-left: 20px;
+		}
+	}
+}
+
+input[type="text"], input[type="password"] {
+	height: 30px;
+}
+
+.new-goal {
+	margin-bottom:20px;
+}
+
+.goal-holder {
+	.goal-bar {
+		margin-bottom:20px;
+		cursor: pointer;
+
+		.goal-title {
+			margin-left: 0;
+			font-size: 16px;
+		}
+		.progress {
+			margin-bottom: 0px;
+			height:30px;
+		}
+	}
+
+	.data-holder {
+		background-color:#ccc;
+		margin-bottom: 20px;
+
+		i {
+			color: #666;
+			&:hover {
+				text-decoration:none;
+				color: #000;
+			};
+		}
+
+		.data-holder-row {
+			padding-top:20px;
+			padding-bottom:20px;
+
+			.summary {
+				padding-left: 60px;
+
+				p {
+					line-height: 10px;
+					&.title {
+						margin-top: 30px;
+					}
+
+					&.inset {
+						margin-left:30px;
+					}
+				}
+			}
+
+			.entries {
+				.entry-list-header {
+					cursor: pointer;
+
+					.icon-play {
+						@include transition(all 0.2s ease-out);
+					}
+
+					&.expanded .icon-play {
+						@include rotate(90);
+					}
+				}
+
+				.entry-date {
+					margin-left: 10px;
+				}
+
+				.words {
+					text-align: right;
+
+					.hidden {
+						display: none;
+					}
+
+					input {
+						width: 100%;
+						text-align: right;
+					}
+				}
+				.time {
+					padding-left:20px;
+				}
+				.progress {
+					margin-bottom: 0px;
+				}
+				.entry-list-day-header {
+					cursor: pointer;
+					margin-bottom:5px;
+
+					&:hover {
+						background-color: #ddd;
+					}
+
+					.icon-play {
+						@include transition(all 0.2s ease-out);
+					}
+				}
+
+				.day {
+					.icon-check {
+						color: #00B31B;
+						&:hover {
+							color: #00D420;
+						};
+					}
+					.icon-remove-sign {
+						color: #960202;
+						&:hover {
+							color: #C40000;
+						};
+					}
+				}
+
+				.days {
+					margin-bottom:20px;
+				}
+			}
+		}
+	}
+}

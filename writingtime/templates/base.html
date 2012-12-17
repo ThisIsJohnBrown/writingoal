@@ -1,8 +1,9 @@
 <html>
     <head>
-        <title>Writing Time</title>
+        <title>Writingoal</title>
 
-        <link href="{{STATIC_URL}}bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
+        <link href="{{STATIC_URL}}css/font-awesome.css" rel="stylesheet">
         <style>
           body {
             padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -26,7 +27,7 @@
         <div class="navbar navbar-inverse navbar-fixed-top">
           <div class="navbar-inner">
             <div class="container">
-              <a class="brand" href="/">Writing Time</a>
+              <a class="brand" href="/">Writin<span class="logo-blue">g</span>oal</a>
               {% if user.is_authenticated %}
                   <div class="nav-collapse collapse">
                     <ul class="nav">

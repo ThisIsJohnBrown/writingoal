@@ -17,43 +17,7 @@ import math
 
 def index(request):
     if request.user.is_authenticated():
-        goals = Goal.objects.all().filter(user=request.user)
-        print goals
-        for goal in goals:
-            goal.entries = GoalEntry.objects.all().filter(goal=goal).order_by('-entry_date')
-            goal.num_written = 0
-            for entry in goal.entries:
-                goal.num_written += entry.num_words
-            
-            goal.days = (goal.end_date - goal.start_date).days
-            goal.days_remaining = (goal.end_date - datetime.datetime.utcnow().replace(tzinfo=utc)).days
-            goal.days_progress = goal.days - goal.days_remaining
-            goal.average = goal.num_words / goal.days
-            num_entries = goal.entries.count()
-            if num_entries:
-                num_entries = float(num_entries)
-            if goal.days_progress:
-                goal.average_entries = round(num_entries/goal.days_progress, 2)
-                goal.average_written = goal.num_written/goal.days_progress
-            else:
-                goal.average_entries = 0
-                goal.average_written = 0
-            
-            goal.num_remaining = goal.num_words - goal.num_written
-
-            if goal.days_remaining:
-                goal.average_remaining = goal.num_remaining/goal.days_remaining
-            else:
-                goal.average_remaining = 0
-            num_written = goal.num_written
-            if num_written:
-                num_written = float(num_written)
-            goal.percent_actual = int(num_written/goal.num_words*100)
-            percent_goal = goal.average*goal.days_progress
-            if percent_goal:
-                percent_goal = float(percent_goal)
-            goal.percent_goal = int(percent_goal/goal.num_words*100)
-            goal.percent_diff = math.fabs(goal.percent_actual - goal.percent_goal)
+        goals = Goal.objects.all().filter(user=request.user).order_by('-start_date')
     else:
         if request.POST:
             username = request.POST['username']
@@ -63,7 +27,6 @@ def index(request):
                 if user.is_active:
                     login(request, user)
                     return HttpResponseRedirect('/')
-
     return render_to_response('index.html', locals(), context_instance=RequestContext(request))
 
 def login_user(request):

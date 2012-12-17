@@ -1,5 +1,5 @@
 <div data-toggle="collapse" class="goal-bar" data-target="#collapse{{ goal.id }}">
-  <div class="span2 goal-title">{{goal.name}}</div>
+  <div class="span2 goal-title"><span class="btn">{{goal.name}}</span></div>
   <div class="progress progress-striped">
     {% if goal.percent_goal > goal.percent_actual %}
       <div class="bar" style="width: {{goal.percent_actual}}%;"></div>
@@ -11,34 +11,72 @@
   </div>
 </div>
  
-<div id="collapse{{ goal.id }}" class="collapse {% if collapse %}in {% endif %}data-holder">
+<div id="collapse{{ goal.id }}" class="collapse data-holder">
   <div class="row data-holder-row">
-    <div class="span6">
-      <p>Summary</p>
+    <div class="span5 summary">
+      <p>Goal Summary 
+        <a href="#modal-update-goal" data-name="{{goal.name}}" data-words="{{goal.num_words}}" data-start="{{goal.start_date|date:"m/d/Y"}}" data-end="{{goal.end_date|date:"m/d/Y"}}" data-days="{{goal.days}}" data-toggle="modal" data-id="{{goal.id}}" class="update-goal"><i class="icon-edit"></i></a>
+        <a href="#modal-delete-goal" data-toggle="modal" data-id="{{goal.id}}" class="delete-goal"><i class="icon-trash"></i></a>
+      </p>
       <p class="inset">{{ goal.num_words }} words in {{ goal.days }} days</p>
       <p class="inset">{{ goal.average }} words per day</p>
 
-      <p>Progress</p>
-      <p class="inset">{{ goal.num_written }} words written in {{ goal.days_progress }} days</p>
-      <p class="inset">{{ goal.average_written }} words per day, {{goal.average_entries}} entries per day</p>
+      {% if goal.days_progress >= 0 %}
 
-      <p>To Finish</p>
-      <p class="inset">{{ goal.num_remaining }} words and {{ goal.days_remaining }} days left</p>
-      <p class="inset">{{ goal.average_remaining }} words per day</p>
+        <p class="title">Progress</p>
+        <p class="inset">{{ goal.num_written }} words written in {{ goal.days_progress }} days</per>
+        <p class="inset">{{ goal.average_written }} words per day
+
+        <p class="title">To Finish</p>
+        <p class="inset">{{ goal.num_remaining }} words and {{ goal.days_remaining }} days left</p>
+        <p class="inset">{{ goal.average_remaining }} words per day</p>
+      {% else %}
+        <p class="title">Starts in {{goal.days_until}} day{{goal.days_until|pluralize}}</p>
+      {% endif %}
     </div>
-    <div class="span6">
-      <div class="input-append">
-        <input class="span2 entry-add" type="text">
-        <button class="btn entry-add btn-success" type="button" data-input-class="input.entry-add" data-goal-id="{{goal.id}}" data-entry-url="{% url entry_create %}" data-entry-list=".entry-list{{goal.id}}">Add words!</button>
-      </div>
-      {% if goal.entries %}
-	      <p class="entry-list-header"><i class="icon-play"></i> Entries</p>
-	      <div class="entry-list collapse{% if collapse %} in{% endif %} ">
-		      {% for entry in goal.entries %}
-		        <p>{{ entry.get_html }}</p>
-		      {% endfor %}
-	  	  </div>
-  	  {% endif %}
+    <div class="span5 entries">
+      {% if goal.days_progress >= 0 %}
+        <div class="input-append">
+          <input class="span2 entry-add" type="text">
+          <button class="btn entry-add btn-success" type="button" data-input-class="input.entry-add" data-goal-id="{{goal.id}}" data-entry-url="{% url entry_create %}" data-entry-list=".entry-list{{goal.id}}">Add words!</button>
+        </div>
+      
+        {% if goal.entries %}
+  	      <p class="entry-list-header"><i class="icon-play"></i> Entries</p>
+  	      <div class="entry-list collapse">
+  		      {% for entry in goal.entries %}
+              {% ifchanged entry.entry_date.date %}
+                {% if forloop.counter0 != 0 %}
+                </div>
+                {% endif %}
+                <div class="row entry-list-day-header" data-collapse-name=".days.entry-day-{{ entry.entry_date|date:"Ymd" }}-{{goal.id}}">
+                  <div class="span2"><span class="entry-date"><i class="icon-play"></i> {{ entry.entry_date|date:"M j, Y" }}</span></div>
+                  <div class="span1 words entry-day-{{ entry.entry_date|date:"Ymd" }}-{{goal.id}}">{{entry.daily_num_words}}</div>
+                  <div class="span2">
+                    <div class="progress progress-striped">
+                      <div class="bar entry-day-{{ entry.entry_date|date:"Ymd" }}-{{goal.id}}" style="width: {{entry.daily_percent}}%;"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="collapse days entry-day-{{ entry.entry_date|date:"Ymd" }}-{{goal.id}}">
+              {% endifchanged %}
+                  <div class="row day" data-entry-id="{{entry.id}}">
+      		          <div class="span2"><span class="time">{{ entry.entry_date|date:"g:iA" }}</span></div>
+                    <div class="span1 words"><span class="word-count">{{entry.num_words}}</span><input class="hidden" type="text" value="{{entry.num_words}}"></div>
+                    <div class="span2 start-icons">
+                      <a class="edit-word-count" href="#"><i class="icon-edit"></i></a>
+                      <a href="#" class="delete-entry"><i class="icon-trash"></i></a>
+                    </div>
+                    <div class="span2 edit-icons hidden">
+                      <a class="update-entry" href="#" data-words-name=".words.entry-day-{{ entry.entry_date|date:"Ymd" }}-{{goal.id}}" data-progress-name=".bar.entry-day-{{ entry.entry_date|date:"Ymd" }}-{{goal.id}}"><i class="icon-check"></i></a>
+                      <a href="#" class="cancel-entry-update"><i class="icon-remove-sign"></i></a>
+                    </div>
+                  </div>
+  		      {% endfor %}
+            </div>
+  	  	  </div>
+    	  {% endif %}
+      {% endif %}
     </div>
   </div>
 </div>

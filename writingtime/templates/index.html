@@ -32,6 +32,45 @@
     </div>
   </div>
 
+  <div id="modal-update-goal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modal-update-goal" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="modal-update-goal">Update this goal</h3>
+    </div>
+    <div class="modal-body">
+      <form class="update-goal" action="{% url goal_update %}">
+        <fieldset>
+          <input type="text" name="goal-name" placeholder="Goal Name">  <input type="text" name="num-words" placeholder="Word count" class="input-small">
+          <div class="clear"></div>
+          <input type="text" name="start-date" placeholder="Start Date" class="input-small">
+          <div class="clear"></div>
+          <input type="text" name="end-date" placeholder="End Date" class="input-small"> or <input type="text" name="num-days" placeholder="# of days" class="input-small">
+          <div class="clear"></div>
+          <input type="hidden" name="goal-id">
+        </fieldset>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary submit-update-goal">Update</button>
+    </div>
+  </div>
+
+  <div id="modal-delete-goal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modal-delete-goal" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="modal-delete-goal">Delete this goal?</h3>
+    </div>
+    <div class="modal-body">
+      
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+      <button class="btn btn-primary submit-delete-goal">Delete</button>
+    </div>
+  </div>
+
+  <div class="goals">
   {% if goals %}
 
     {% for goal in goals %}
@@ -41,6 +80,7 @@
     {% endfor %}  
 
   {% endif %}
+  </div>
 
 {% else %}
 
@@ -49,7 +89,8 @@
   {% csrf_token %}
     <input id="username-field" name="username" type="text" placeholder="username" />
     <input id="password-field" name="password" type="password" placeholder="password"/>
-    <button type="submit">Login</button>
+    <input id="tz" name="tz" type="hidden">
+    <button class="btn" type="submit">Login</button>
 </form>
 
 {% endif %}
