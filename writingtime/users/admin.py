@@ -1,4 +1,4 @@
-from carbon.users.models import UserProfile
+from writingtime.users.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 

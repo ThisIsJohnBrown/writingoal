@@ -8,10 +8,22 @@
       <div class="bar" style="width: {{goal.percent_goal}}%;" rel="tooltip" title="{{goal.words_goal}} words"></div>
       <div class="bar bar-success" style="width: {{goal.percent_diff}}%;" rel="tooltip" title="{{goal.words_ahead}} words ahead"></div>
     {% endif %}
+    {% for subgoal in goal.subgoals %}
+      {% if subgoal.subgoal_is_active %}
+      <div class="subgoal-marker-holder">
+        <div class="subgoal-overlay"> </div>
+        <div class="subgoal-marker subgoal-start" rel="tooltip" data-perc="{{ subgoal.percent_actual }}" title="{{subgoal.name}} - {{ subgoal.percent_subgoal_progress}}% completed"><i class="icon-caret-up"></i></div>
+        <div class="subgoal-marker subgoal-end" data-perc="{{ subgoal.percent_actual_subgoal_end }}" rel="tooltip" title="{{subgoal.name}} - Goal at {{ subgoal.subgoal_target }} words{% if subgoal.percent_subgoal_progress < 100 and subgoal.end_date %}<br>{{ subgoal.days_remaining }} day{{ subgoal.days_remaining|pluralize }} left{% endif %}"><i class="icon-caret-up"></i></div>
+      </div>
+      {% endif %}
+    {% endfor %}
   </div>
 </div>
  
 <div id="collapse{{ goal.id }}" class="collapse data-holder">
+  <div class="row">
+    <a href="#modal-create-subgoal" role="button" class="span2 btn btn-large btn-success right open-subgoal-modal" data-toggle="modal" data-goal="{{ goal.id }}">+ New SubGoal</a>
+  </div>
   <div class="row data-holder-row">
     <div class="span5 summary">
       <p>Goal Summary 
@@ -20,6 +32,19 @@
       </p>
       <p class="inset">{{ goal.num_words }} words in {{ goal.days }} days</p>
       <p class="inset">{{ goal.average }} words per day</p>
+      
+      {% if goal.subgoals %}
+        <p class="title">Subgoals</p>
+
+        {% for goal in goal.subgoals %}
+          <p class="inset">{{ goal.name }}
+            <a href="#modal-update-goal" data-name="{{goal.name}}" data-words="{{goal.num_words}}" data-start="{{goal.start_date|date:"m/d/Y"}}" data-end="{{goal.end_date|date:"m/d/Y"}}" data-days="{{goal.days}}" data-toggle="modal" data-id="{{goal.id}}" class="update-goal"><i class="icon-edit"></i></a>
+            <a href="#modal-delete-goal" data-toggle="modal" data-id="{{goal.id}}" data-subgoal="true" data-parent-id="{{ goal.parent_goal.id }}" class="delete-goal"><i class="icon-trash"></i></a>
+          </p>
+          <p class="inset">{{ goal.num_words }} words{% if goal.days %} in {{ goal.days }} days{% endif %}</p>
+          {% if goal.days %}<p class="inset">{{ goal.average }} words per day{% endif %}</p>
+        {% endfor %}
+      {% endif %}
 
       {% if goal.days_progress >= 0 %}
 

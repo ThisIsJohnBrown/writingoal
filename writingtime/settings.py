@@ -33,7 +33,7 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Greenwich'
+TIME_ZONE = 'America/Los_Angeles'
 USE_TZ = True
 
 # Language code for this installation. All choices can be found here:
@@ -41,7 +41,7 @@ USE_TZ = True
 LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
-AUTH_PROFILE_MODULE = 'writingtime.UserProfile'
+AUTH_PROFILE_MODULE = 'writingtime.users.UserProfile'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -146,6 +146,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south',
     'writingtime.goals',
+    'writingtime.users',
+    'django_extensions',
     #'sass',
     #'djcelery,',
     #'debug_toolbar',

@@ -4,6 +4,26 @@ $(function() {
 
 	$('input[name="start-date"]').datepicker();
 	$('input[name="end-date"]').datepicker();
+
+	setSubgoalMarkers();
+	$('.tooltip-inner').livequery(function() {
+		var oW = $(this).width();
+		$(this).html($(this).html().replace('&lt;br&gt;', '<br>'))
+		var nW = $(this).width();
+		var left = parseInt($(this).parents('.tooltip').css('left'))
+		$(this).parents('.tooltip').css({'left': left + ((oW - nW)/2) + 'px'})
+	});
+	$(window).resize(setSubgoalMarkers);
+
+	$('.start-now').live('click', function() {
+		if ($('.start-now').is(':checked')) {
+			var date = new Date();
+			$(this).siblings('input[name="start-date"]').val((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear()).prop('disabled', true);;
+		} else {
+			$(this).siblings('input[name="start-date"]').prop('disabled', false);;
+		}
+	})
+
 	$('input[name="end-date"]').live('change keyup', function() {
 		var startDate = new Date($(this).siblings('input[name="start-date"]').val());
 		var endDate = new Date($(this).val());
@@ -43,16 +63,31 @@ $(function() {
 		
 	})
 
+	$('.open-subgoal-modal').live('click', function(e) {
+		$('#modal-create-subgoal input[name="subgoal"]').val($(this).data('goal'))
+	})
+
 	$('.submit-create-goal').live('click', function(e) {
 		e.preventDefault();
+		var that = this;
+		$('.create-goal input[name="ts"]').val(Math.round(new Date().getTime()/1000) - (new Date().getTimezoneOffset()*60))
 		$.ajax({
 			'url': $('.create-goal').attr('action'),
 			'type': 'POST',
-			'data': $('.create-goal').serialize(),
+			'data': $(this).parents('.modal').find('.create-goal').serialize(),
 			'success': function(data) {
-				$('#modal-create-goal').modal('hide');
-				$('.goals').prepend('<div class="goal-holder"></div>')
-				$('.goals .goal-holder:eq(0)').html(data);
+				$(that).parents('.modal').modal('hide');
+				if ($(that).parents('.modal').find('input[name="subgoal"]').length) {
+					console.log(data);
+					console.log($(that).parents('.modal').find('input[name="subgoal"]').val());
+					console.log($(that).parents('.modal').find('input[name="subgoal"]'));
+					console.log('.goal-holder[data-goal="' + $(that).parents('.modal').find('input[name="subgoal"]').val() + '"]');
+					console.log($('.goal-holder[data-goal="' + $(that).parents('.modal').find('input[name="subgoal"]').val() + '"]').length);
+					updateGoal($(that).parents('.modal').find('input[name="subgoal"]').val(), data);
+				} else {
+					$('.goals').prepend('<div class="goal-holder"></div>')
+					$('.goals .goal-holder:eq(0)').html(data);
+				}
 			}
 		})
 	})
@@ -73,6 +108,7 @@ $(function() {
 	$('.submit-delete-goal').live('click', function(e) {
 		e.preventDefault();
 		var that = $(this);
+		var parentId = $(this).data('parentId');
 		$.ajax({
 			'url': '/goals/delete/',
 			'type': 'POST',
@@ -81,7 +117,12 @@ $(function() {
 			},
 			'success': function(data) {
 				$('#modal-delete-goal').modal('hide');
-				$('.goal-holder[data-goal="' + that.data('id') + '"]').remove()
+				if (!parentId) {
+					$('.goal-holder[data-goal="' + that.data('id') + '"]').remove()
+				} else {
+					console.log(parentId);
+					updateGoal(parentId, data);
+				}
 			}
 		})
 	})
@@ -114,6 +155,7 @@ $(function() {
 			$('.goal-holder[data-goal="' + goalHolder + '"]').find(classes[clas]).addClass('in')
 		}
 		$('*[rel="tooltip"]').tooltip();
+		setSubgoalMarkers();
 	}
 
 	function dayToggle(day) {
@@ -135,6 +177,7 @@ $(function() {
 		var modal = $($(this).attr('href'));
 		var data = $(this).data();
 		modal.find('.submit-delete-goal').data('id', data['id']);
+		modal.find('.submit-delete-goal').data('parentId', data['parentId']);
 	})
 
 	$('.update-goal').live('click', function(e) {
@@ -217,3 +260,26 @@ $(function() {
 		$(this).parents('.day').find('.icon-edit').click();
 	})
 })
+
+function setSubgoalMarkers(e) {
+	$('.subgoal-marker').each(function() {
+		var progress = $(this).parents('.progress')
+		var offset = progress.width() * ($(this).data('perc')/100);
+		$(this).css({'left': progress.offset().left + offset + 'px'});
+	});
+	$('.subgoal-marker-holder').live('mouseover', function() {
+		$(this).find('.subgoal-overlay').addClass('show').removeClass('hidden');
+	})
+	$('.subgoal-marker-holder').live('mouseout', function() {
+		$(this).find('.subgoal-overlay').removeClass('show').addClass('hidden');
+	});
+	$('.subgoal-marker-holder').each(function() {
+		var start = $(this).find('.subgoal-start');
+		var end = $(this).find('.subgoal-end');
+		var overlay = $(this).find('.subgoal-overlay');
+		overlay.css({
+			'left': start.offset().left,
+			'width': end.offset().left - start.offset().left
+		})
+	})
+}

@@ -16,8 +16,10 @@ import math
 #from facepy import GraphAPI
 
 def index(request):
+    test_date = datetime.datetime.now()
     if request.user.is_authenticated():
-        goals = Goal.objects.all().filter(user=request.user).order_by('-start_date')
+        goals = Goal.objects.all().filter(user=request.user, parent_goal=None).order_by('-start_date')
+        #print request.user.get_profile().tz
     else:
         if request.POST:
             username = request.POST['username']
@@ -39,6 +41,9 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+                profile = user.get_profile()
+                profile.tz = request.POST['tz']
+                profile.save()
                 return HttpResponseRedirect(reverse('index'))
             else:
                 pass
