@@ -25,6 +25,10 @@ input[type="text"], input[type="password"] {
 	margin-bottom:20px;
 }
 
+input.error {
+	border-color: red;
+}
+
 .goal-holder {
 	.goal-bar {
 		margin-bottom:20px;
@@ -37,6 +41,42 @@ input[type="text"], input[type="password"] {
 		.progress {
 			margin-bottom: 0px;
 			height:30px;
+
+			.subgoal-marker-holder {
+
+				.subgoal-marker {
+					width: 3px;
+					height: 30px;
+					background-color: black;
+					position: absolute;
+					color: black;
+
+					&.subgoal-end {
+						background-color: green;
+						color: green;
+						margin-left: -3px;
+					}
+
+					i {
+						font-size: 21px;
+						position: absolute;
+						left: -5px;
+						top: 18px;
+					}
+				}
+
+				.subgoal-overlay {
+					position: absolute;
+					background-color: black;
+					opacity: 0;
+					height: 30px;
+					@include transition(all 0.2s ease-out);
+
+					&.show {
+						opacity: .5;
+					}
+				}
+			}
 		}
 	}
 

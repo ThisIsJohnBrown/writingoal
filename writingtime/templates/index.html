@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load tz %}
 
 {% block content %}
 
 {% if user.is_authenticated %}
-
+  
   <div class="row">
     <a href="#modal-create-goal" role="button" class="span2 btn btn-large btn-success right new-goal" data-toggle="modal">+ New Goal</a>
   </div>
@@ -17,7 +18,37 @@
     <div class="modal-body">
       <form class="create-goal" action="{% url goal_create %}">
         <fieldset>
+          <input type="hidden" name="ts">
           <input type="text" name="goal-name" placeholder="Goal Name">  <input type="text" name="num-words" placeholder="Word count" class="input-small">
+          <div class="clear"></div>
+          <input type="checkbox" name="start-now" class="start-now"> Start now?
+          <div class="clear"></div>
+          <input type="text" name="start-date" placeholder="Start Date" class="input-small">
+          <div class="clear"></div>
+          <input type="text" name="end-date" placeholder="End Date" class="input-small"> or <input type="text" name="num-days" placeholder="# of days" class="input-small">
+          <div class="clear"></div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary submit-create-goal">Create</button>
+    </div>
+  </div>
+
+  <div id="modal-create-subgoal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-goal" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="modal-create-goal">Create a new subgoal</h3>
+    </div>  
+    <div class="modal-body">
+      <form class="create-goal" action="{% url goal_create %}">
+        <fieldset>
+          <input type="hidden" name="subgoal">
+          <input type="hidden" name="ts">
+          <input type="text" name="goal-name" placeholder="Goal Name">  <input type="text" name="num-words" placeholder="Word count" class="input-small">
+          <div class="clear"></div>
+          <input type="checkbox" name="start-now" class="start-now"> Start now?
           <div class="clear"></div>
           <input type="text" name="start-date" placeholder="Start Date" class="input-small">
           <div class="clear"></div>
@@ -40,7 +71,11 @@
     <div class="modal-body">
       <form class="update-goal" action="{% url goal_update %}">
         <fieldset>
+          <input type="hidden" name="ts">
+          <input type="hidden" name="is-endless">
           <input type="text" name="goal-name" placeholder="Goal Name">  <input type="text" name="num-words" placeholder="Word count" class="input-small">
+          <div class="clear"></div>
+          <input type="checkbox" name="start-now" class="start-now"> Start now?
           <div class="clear"></div>
           <input type="text" name="start-date" placeholder="Start Date" class="input-small">
           <div class="clear"></div>

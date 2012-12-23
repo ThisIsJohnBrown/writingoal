@@ -1,3 +1,5 @@
+{% load tz %}
+
 <div data-toggle="collapse" class="goal-bar" data-target="#collapse{{ goal.id }}">
   <div class="span2 goal-title"><span class="btn">{{goal.name}}</span></div>
   <div class="progress progress-striped">
@@ -6,22 +8,65 @@
       <div class="bar bar-danger" style="width: {{goal.percent_diff}}%;" rel="tooltip" title="{{goal.words_behind}} words behind"></div>
     {% else %}
       <div class="bar" style="width: {{goal.percent_goal}}%;" rel="tooltip" title="{{goal.words_goal}} words"></div>
-      <div class="bar bar-success" style="width: {{goal.percent_diff}}%;" rel="tooltip" title="{{goal.words_ahead}} words ahead"></div>
+      <div class="bar bar-success" style="width: {{goal.percent_diff}}%;" rel="tooltip" title="{% if goal.end_date %}{{goal.words_ahead}} words ahead{% else %}{{ goal.num_written }}{% endif %} words written"></div>
     {% endif %}
+    {% for subgoal in goal.subgoals %}
+      {% if subgoal.subgoal_is_active %}
+      <div class="subgoal-marker-holder" data-id="{{ subgoal.id }}">
+        <div class="subgoal-overlay hidden"> </div>
+        <div class="subgoal-marker subgoal-start" rel="tooltip" data-perc="{{ subgoal.percent_actual }}" title="{{subgoal.name}} - {{ subgoal.percent_subgoal_progress}}% completed"><i class="icon-caret-up"></i></div>
+        <div class="subgoal-marker subgoal-end" data-perc="{{ subgoal.percent_actual_subgoal_end }}" rel="tooltip" title="{{subgoal.name}} - Goal at {{ subgoal.subgoal_target }} words{% if subgoal.percent_subgoal_progress < 100 and subgoal.end_date %}<br>{{ subgoal.days_remaining }} day{{ subgoal.days_remaining|pluralize }} left{% endif %}"><i class="icon-caret-up"></i></div>
+      </div>
+      {% endif %}
+    {% endfor %}
   </div>
 </div>
  
 <div id="collapse{{ goal.id }}" class="collapse data-holder">
+  <div class="row">
+    <a href="#modal-create-subgoal" role="button" class="span2 btn btn-large btn-success right open-subgoal-modal" data-toggle="modal" data-goal="{{ goal.id }}">+ New SubGoal</a>
+  </div>
   <div class="row data-holder-row">
     <div class="span5 summary">
       <p>Goal Summary 
-        <a href="#modal-update-goal" data-name="{{goal.name}}" data-words="{{goal.num_words}}" data-start="{{goal.start_date|date:"m/d/Y"}}" data-end="{{goal.end_date|date:"m/d/Y"}}" data-days="{{goal.days}}" data-toggle="modal" data-id="{{goal.id}}" class="update-goal"><i class="icon-edit"></i></a>
+        <a href="#modal-update-goal" data-name="{{goal.name}}" data-words="{{goal.num_words}}" data-start="{{goal.start_date|date:"m/d/Y"}}" data-end="{{goal.end_date|date:"m/d/Y"}}" data-days="{{goal.days}}" data-time="{{goal.start_date|date:"His"}}" data-toggle="modal" data-id="{{goal.id}}" class="update-goal"><i class="icon-edit"></i></a>
         <a href="#modal-delete-goal" data-toggle="modal" data-id="{{goal.id}}" class="delete-goal"><i class="icon-trash"></i></a>
       </p>
-      <p class="inset">{{ goal.num_words }} words in {{ goal.days }} days</p>
-      <p class="inset">{{ goal.average }} words per day</p>
+      {% if goal.end_date %}
+        <p class="inset">{{ goal.num_words }} words in {{ goal.days }} day{{goal.days|pluralize}}</p>
+        <p class="inset">{{ goal.average }} words per day</p>
+      {% else %}
+        <p class="inset">{{ goal.num_written }} of {{ goal.num_words }} words</p>
+        <p class="inset">{{ goal.average_written }} words per day for {{ goal.days }} day{{goal.days|pluralize}}</p>
+      {% endif %}
+      
+      {% if goal.subgoals %}
+        <p class="title">Subgoals</p>
 
-      {% if goal.days_progress >= 0 %}
+        {% for subgoal in goal.subgoals %}
+          <div class="subgoal-info-holder" data-id="{{ subgoal.id }}">
+            <p class="inset">{{ subgoal.name }}
+              <a href="#modal-update-goal" data-name="{{subgoal.name}}" data-words="{{subgoal.num_words}}" data-start="{{subgoal.start_date|date:"m/d/Y"}}" data-end="{{subgoal.end_date|date:"m/d/Y"}}" data-days="{{subgoal.days}}" data-toggle="modal" data-id="{{subgoal.id}}" class="update-goal"><i class="icon-edit"></i></a>
+              <a href="#modal-delete-goal" data-toggle="modal" data-id="{{subgoal.id}}" data-subgoal="true" data-parent-id="{{ subgoal.parent_goal.id }}" class="delete-goal"><i class="icon-trash"></i></a>
+            </p>
+            {% if subgoal.end_date %}
+              <p class="inset">{{ subgoal.num_words }} words in {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
+              <p class="inset">{{ subgoal.average }} words per day</p>
+              <p class="inset">Progress</p>
+              <p class="inset">{{subgoal.num_written}} words written</p>
+            {% else %}
+              <p class="inset">{{ subgoal.num_written }} of {{ subgoal.num_words }} words</p>
+              <p class="inset">{{ subgoal.average_written }} words per day for {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
+            {% endif %}
+            {% if subgoal.days_until > 0 %}
+              <p class="inset">Starts in {{ subgoal.days_until }} day{{subgoal.days_until|pluralize}}
+            {% endif %}
+            <br>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% if goal.days_progress >= 0 and goal.end_date %}
 
         <p class="title">Progress</p>
         <p class="inset">{{ goal.num_written }} words written in {{ goal.days_progress }} days</per>
@@ -31,11 +76,13 @@
         <p class="inset">{{ goal.num_remaining }} words and {{ goal.days_remaining }} days left</p>
         <p class="inset">{{ goal.average_remaining }} words per day</p>
       {% else %}
-        <p class="title">Starts in {{goal.days_until}} day{{goal.days_until|pluralize}}</p>
+        {% if goal.days_until and goal.end_date%}
+          <p class="title">Starts in {{goal.days_until}} day{{goal.days_until|pluralize}}</p>
+        {% endif %}
       {% endif %}
     </div>
     <div class="span5 entries">
-      {% if goal.days_progress >= 0 %}
+      {% if goal.days_progress >= 0 or not goal.end_date %}
         <div class="input-append">
           <input class="span2 entry-add-{{goal.id}}" type="text">
           <button class="btn entry-add btn-success" type="button" data-input-class="input.entry-add-{{goal.id}}" data-goal-id="{{goal.id}}" data-entry-url="{% url entry_create %}" data-entry-list=".entry-list{{goal.id}}">Add words!</button>
@@ -43,6 +90,7 @@
       
         {% if goal.entries %}
   	      <p class="entry-list-header"><i class="icon-play"></i> Entries</p>
+          {% localtime off %}
   	      <div class="entry-list collapse">
   		      {% for entry in goal.entries %}
               {% ifchanged entry.entry_date.date %}
@@ -50,13 +98,15 @@
                 </div>
                 {% endif %}
                 <div class="row entry-list-day-header" data-collapse-name=".days.entry-day-{{ entry.entry_date|date:"Ymd" }}-{{goal.id}}">
-                  <div class="span2"><span class="entry-date"><i class="icon-play"></i> {{ entry.entry_date|date:"M j, Y" }}</span></div>
+                  <div class="span2"><span class="entry-date"><i class="icon-play"></i> {% timezone TIME_ZONE %}{{ entry.entry_date|date:"M j, Y" }}{% endtimezone %}</span></div>
                   <div class="span1 words entry-day-{{ entry.entry_date|date:"Ymd" }}-{{goal.id}}">{{entry.daily_num_words}}</div>
-                  <div class="span2">
-                    <div class="progress progress-striped">
-                      <div class="bar entry-day-{{ entry.entry_date|date:"Ymd" }}-{{goal.id}}" style="width: {{entry.daily_percent}}%;"></div>
+                  {% if goal.end_date  %}
+                    <div class="span2">
+                      <div class="progress progress-striped">
+                        <div class="bar entry-day-{{ entry.entry_date|date:"Ymd" }}-{{goal.id}}" style="width: {{entry.daily_percent}}%;"></div>
+                      </div>
                     </div>
-                  </div>
+                  {% endif %}
                 </div>
                 <div class="collapse days entry-day-{{ entry.entry_date|date:"Ymd" }}-{{goal.id}}">
               {% endifchanged %}
@@ -75,6 +125,7 @@
   		      {% endfor %}
             </div>
   	  	  </div>
+          {% endlocaltime %}
     	  {% endif %}
       {% endif %}
     </div>
