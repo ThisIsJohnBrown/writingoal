@@ -41,7 +41,7 @@ USE_TZ = True
 LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
-AUTH_PROFILE_MODULE = 'writingtime.users.UserProfile'
+AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -52,7 +52,7 @@ USE_I18N = True
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -106,6 +106,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'writingtime.middleware.TimezoneMiddleware'
     #'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -134,6 +135,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
+    'django.core.context_processors.tz',
 )
 
 INSTALLED_APPS = (
@@ -145,6 +147,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'south',
+    'writingtime',
     'writingtime.goals',
     'writingtime.users',
     'django_extensions',

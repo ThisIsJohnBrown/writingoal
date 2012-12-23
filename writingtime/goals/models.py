@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.timezone import utc
 
 import datetime, math
+import pytz
 
 class Goal(models.Model):
 	user = models.ForeignKey(User, related_name='user')
@@ -37,25 +38,41 @@ class Goal(models.Model):
 				day = entry.entry_date.strftime('%d%m%y')
 				daily_num = entry.num_words
 			entry.daily_num_words = daily_num
-			entry.daily_percent = int(float(daily_num) / average * 100)
-			if entry.daily_percent > 100:
-				entry.daily_percent = 100
+			if average:
+				entry.daily_percent = int(float(daily_num) / average * 100)
+				if entry.daily_percent > 100:
+					entry.daily_percent = 100
 		return goal_entries
 	
 	def days(self):
-		return (self.end_date - self.start_date).days
+		if self.end_date:
+			return (self.end_date - self.start_date).days
+		else:
+			return (datetime.datetime.now().replace(tzinfo=None) - self.start_date.replace(tzinfo=None)).days + 1
 
 	def days_remaining(self):
-		return (self.end_date.date() - datetime.datetime.now().date()).days
+		if self.end_date:
+			return (self.end_date.date() - datetime.datetime.now().date()).days
+		else:
+			return 0
 
 	def days_progress(self):
-		return self.days() - self.days_remaining()
+		if self.days():
+			return self.days() - self.days_remaining()
+		else:
+			return -1
 
 	def days_until(self):
-		return (self.start_date.date() - datetime.datetime.now().date()).days
+		if self.start_date:
+			return (self.start_date.date() - datetime.datetime.now().date()).days
+		else:
+			return False
 
 	def average(self):
-		return self.num_words / self.days()
+		if self.end_date:
+			return self.num_words / self.days()
+		else:
+			return False
 	
 	def num_written(self):
 		num = 0
@@ -72,7 +89,9 @@ class Goal(models.Model):
 		return self.num_written() + self.num_words
 
 	def average_written(self):
-		if (self.days_progress()):
+		if not self.end_date:
+			return self.num_written()/self.days()
+		elif self.days_progress():
 			return self.num_written()/self.days_progress()
 		else:
 			return 0
@@ -108,7 +127,7 @@ class Goal(models.Model):
 			perc = 100
 		elif perc < 0:
 			perc = 0
-		return perc
+		return round(perc, 1)
 
 	def percent_goal(self):
 		if self.days_progress() >= 0:

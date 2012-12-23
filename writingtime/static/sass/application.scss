@@ -25,6 +25,10 @@ input[type="text"], input[type="password"] {
 	margin-bottom:20px;
 }
 
+input.error {
+	border-color: red;
+}
+
 .goal-holder {
 	.goal-bar {
 		margin-bottom:20px;

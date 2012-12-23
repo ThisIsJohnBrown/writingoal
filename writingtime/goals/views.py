@@ -13,11 +13,13 @@ from writingtime.goals.models import Goal, GoalEntry
 import datetime, json, string, math
 from django.utils.timezone import utc
 
+from pytz import timezone
+import pytz
+
 @csrf_exempt
 def goal_create(request):
     response_data = {}
     if request.POST:
-        print request.POST
         #try:
         goal = Goal()
         goal.user = request.user
@@ -28,21 +30,31 @@ def goal_create(request):
             goal.parent_goal = Goal.objects.get(id=int(request.POST['subgoal']))
             try:
                 request.POST['start-now']
-                goal.start_date = datetime.datetime.fromtimestamp(float(request.POST['ts'])).replace(tzinfo=None) - datetime.timedelta(0, 5)
+                goal.start_date = datetime.datetime.now().replace(tzinfo=pytz.utc)
             except:
-                if request.POST['start-date']:
+                try:
                     start = string.split(request.POST['start-date'], '/')
-                    goal.start_date = datetime.datetime(int(start[2]), int(start[0]), int(start[1]))
-            if request.POST['end-date']:
+                    goal.start_date = datetime.datetime(int(start[2]), int(start[0]), int(start[1])).replace(tzinfo=pytz.utc)
+                except:
+                    pass
+            try:
                 end = string.split(request.POST['end-date'], '/')
-                goal.end_date = datetime.datetime(int(end[2]), int(end[0]), int(end[1])).replace(tzinfo=None)
+                goal.end_date = datetime.datetime(int(end[2]), int(end[0]), int(end[1]), 23, 59, 59).replace(tzinfo=pytz.utc)
+            except:
+                pass
             goal.save()
             goal = Goal.objects.get(id=goal.parent_goal.id)
         except:
-            start = string.split(request.POST['start-date'], '/')
-            end = string.split(request.POST['end-date'], '/')
-            goal.start_date = datetime.datetime(int(start[2]), int(start[0]), int(start[1])).replace(tzinfo=None)
-            goal.end_date = datetime.datetime(int(end[2]), int(end[0]), int(end[1])).replace(tzinfo=None)
+            try:
+                start = string.split(request.POST['start-date'], '/')
+                goal.start_date = datetime.datetime(int(start[2]), int(start[0]), int(start[1])).replace(tzinfo=pytz.utc)
+            except:
+                goal.start_date = (datetime.datetime.now() + datetime.timedelta(0, 480*60*60)).replace(tzinfo=pytz.utc)
+            try:
+                end = string.split(request.POST['end-date'], '/')
+                goal.end_date = datetime.datetime(int(end[2]), int(end[0]), int(end[1]), 23, 59, 59).replace(tzinfo=pytz.utc)
+            except:
+                pass
             goal.save()
             goal = Goal.objects.get(id=goal.id)
 
@@ -99,7 +111,7 @@ def goal_update(request):
             end = string.split(request.POST['end-date'], '/')
 
             goal.start_date = datetime.datetime(int(start[2]), int(start[0]), int(start[1]))
-            goal.end_date = datetime.datetime(int(end[2]), int(end[0]), int(end[1]))
+            goal.end_date = datetime.datetime(int(end[2]), int(end[0]), int(end[1]), 23, 59, 59)
 
             goal.save()
             goal = Goal.objects.get(id=request.POST['goal-id'])
@@ -129,7 +141,7 @@ def entry_create(request):
             entry = GoalEntry()
             entry.goal = Goal.objects.all().get(id=request.POST['goal-id'])
             entry.num_words = request.POST['num-words']
-            entry.entry_date = datetime.datetime.fromtimestamp(float(request.POST['tz']))
+            entry.entry_date = datetime.datetime.now().replace(tzinfo=pytz.utc)
             entry.save()
             goal = Goal.objects.all().get(id=entry.goal.id)
             return render_to_response('goals/partial_goal.html', locals(), context_instance=RequestContext(request))
