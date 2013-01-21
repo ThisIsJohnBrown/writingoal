@@ -38,7 +38,7 @@ $textColor:             $grayDark !default;
 
 // Links
 // -------------------------
-$linkColor:             #08c !default;
+$linkColor:             #69D2E7 !default;
 $linkColorHover:        darken($linkColor, 15%) !default;
 
 
@@ -94,8 +94,8 @@ $btnPrimaryBackgroundHighlight:     adjust-hue($btnPrimaryBackground, 20%) !defa
 $btnInfoBackground:                 #5bc0de !default;
 $btnInfoBackgroundHighlight:        #2f96b4 !default;
 
-$btnSuccessBackground:              #62c462 !default;
-$btnSuccessBackgroundHighlight:     #51a351 !default;
+$btnSuccessBackground:              #94CA3D !default;
+$btnSuccessBackgroundHighlight:     #79A432 !default;
 
 $btnWarningBackground:              lighten($orange, 15%) !default;
 $btnWarningBackgroundHighlight:     $orange !default;

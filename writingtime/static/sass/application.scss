@@ -1,17 +1,45 @@
 @import "all";
 @import "font-awesome";
 
+body {
+	#background-image: url('/static/img/gray_jean.png');
+	background-color: #F4F5ED;
+}
+
 .navbar {
+	color: #F4F5ED;
+	background-color: #5C4E51;
+	background-image: none;
+
+	.navbar-inner {
+		background-color: #5C4E51;
+		background-image: none;
+
+		a.brand {
+			color: #F4F5ED;
+
+			&:hover {
+
+			}
+		}
+
+	}
+
 	.logo-blue {
-		color: #08C;
+		color: #69D2E7;
 	}
 
 	.user {
 		float:right;
 		margin-top: 8px;
+		color: #F4F5ED;
+
+		a {
+			color: #69D2E7;
+		}
 
 		.logout:link, .logout:hover, .logout:visited {
-			color:#999;
+			color:#F4F5ED;
 			margin-left: 20px;
 		}
 	}
@@ -81,9 +109,15 @@ input.error {
 	}
 
 	.data-holder {
-		background-color:#ccc;
+		background-image: url('/static/img/billie_holiday.png');
 		margin-bottom: 20px;
 		@include border-radius(5px);
+
+		.open-subgoal-modal {
+			width: 100px;
+			margin-left: 90px;
+			margin-top: 30px;
+		}
 
 		i {
 			color: #666;

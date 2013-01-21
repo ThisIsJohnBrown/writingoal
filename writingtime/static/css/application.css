@@ -1148,52 +1148,78 @@ ul.icons li .icon-large:before {
   content: "\f200";
 }
 
-/* line 5, ../sass/application.scss */
-.navbar .logo-blue {
-  color: #08C;
+/* line 4, ../sass/application.scss */
+body {
+  #background-image: url("/static/img/gray_jean.png");
+  background-color: #F4F5ED;
 }
+
 /* line 9, ../sass/application.scss */
+.navbar {
+  color: #F4F5ED;
+  background-color: #5C4E51;
+  background-image: none;
+}
+/* line 14, ../sass/application.scss */
+.navbar .navbar-inner {
+  background-color: #5C4E51;
+  background-image: none;
+}
+/* line 18, ../sass/application.scss */
+.navbar .navbar-inner a.brand {
+  color: #F4F5ED;
+}
+/* line 28, ../sass/application.scss */
+.navbar .logo-blue {
+  color: #69D2E7;
+}
+/* line 32, ../sass/application.scss */
 .navbar .user {
   float: right;
   margin-top: 8px;
+  color: #F4F5ED;
 }
-/* line 13, ../sass/application.scss */
+/* line 37, ../sass/application.scss */
+.navbar .user a {
+  color: #69D2E7;
+}
+/* line 41, ../sass/application.scss */
 .navbar .user .logout:link, .navbar .user .logout:hover, .navbar .user .logout:visited {
-  color: #999;
+  color: #F4F5ED;
   margin-left: 20px;
 }
 
-/* line 20, ../sass/application.scss */
+/* line 48, ../sass/application.scss */
 input[type="text"], input[type="password"] {
   height: 30px;
 }
 
-/* line 24, ../sass/application.scss */
+/* line 52, ../sass/application.scss */
 .new-goal {
   margin-bottom: 20px;
 }
 
-/* line 28, ../sass/application.scss */
+/* line 56, ../sass/application.scss */
 input.error {
   border-color: red;
 }
 
-/* line 33, ../sass/application.scss */
+/* line 61, ../sass/application.scss */
 .goal-holder .goal-bar {
   margin-bottom: 20px;
   cursor: pointer;
 }
-/* line 37, ../sass/application.scss */
+/* line 65, ../sass/application.scss */
 .goal-holder .goal-bar .goal-title {
   margin-left: 0;
   font-size: 16px;
 }
-/* line 41, ../sass/application.scss */
+/* line 69, ../sass/application.scss */
 .goal-holder .goal-bar .progress {
   margin-bottom: 0px;
   height: 30px;
 }
-/* line 47, ../sass/application.scss */
+/* line 75, ../sass/application.scss */
 .goal-holder .goal-bar .progress .subgoal-marker-holder .subgoal-marker {
   width: 3px;
   height: 30px;
@@ -1201,20 +1227,20 @@ input.error {
   position: absolute;
   color: black;
 }
-/* line 54, ../sass/application.scss */
+/* line 82, ../sass/application.scss */
 .goal-holder .goal-bar .progress .subgoal-marker-holder .subgoal-marker.subgoal-end {
   background-color: green;
   color: green;
   margin-left: -3px;
 }
-/* line 60, ../sass/application.scss */
+/* line 88, ../sass/application.scss */
 .goal-holder .goal-bar .progress .subgoal-marker-holder .subgoal-marker i {
   font-size: 21px;
   position: absolute;
   left: -5px;
   top: 18px;
 }
-/* line 68, ../sass/application.scss */
+/* line 96, ../sass/application.scss */
 .goal-holder .goal-bar .progress .subgoal-marker-holder .subgoal-overlay {
   position: absolute;
   background-color: black;
@@ -1226,13 +1252,13 @@ input.error {
   -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
-/* line 75, ../sass/application.scss */
+/* line 103, ../sass/application.scss */
 .goal-holder .goal-bar .progress .subgoal-marker-holder .subgoal-overlay.show {
   opacity: .5;
 }
-/* line 83, ../sass/application.scss */
+/* line 111, ../sass/application.scss */
 .goal-holder .data-holder {
-  background-color: #ccc;
+  background-image: url("/static/img/billie_holiday.png");
   margin-bottom: 20px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -1241,41 +1267,47 @@ input.error {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
 }
-/* line 88, ../sass/application.scss */
+/* line 116, ../sass/application.scss */
+.goal-holder .data-holder .open-subgoal-modal {
+  width: 100px;
+  margin-left: 90px;
+  margin-top: 30px;
+}
+/* line 122, ../sass/application.scss */
 .goal-holder .data-holder i {
   color: #666;
 }
-/* line 90, ../sass/application.scss */
+/* line 124, ../sass/application.scss */
 .goal-holder .data-holder i:hover {
   text-decoration: none;
   color: #000;
 }
-/* line 96, ../sass/application.scss */
+/* line 130, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row {
   padding-top: 20px;
   padding-bottom: 20px;
 }
-/* line 100, ../sass/application.scss */
+/* line 134, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .summary {
   padding-left: 60px;
 }
-/* line 103, ../sass/application.scss */
+/* line 137, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .summary p {
   line-height: 10px;
 }
-/* line 105, ../sass/application.scss */
+/* line 139, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .summary p.title {
   margin-top: 30px;
 }
-/* line 109, ../sass/application.scss */
+/* line 143, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .summary p.inset {
   margin-left: 30px;
 }
-/* line 116, ../sass/application.scss */
+/* line 150, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-header {
   cursor: pointer;
 }
-/* line 119, ../sass/application.scss */
+/* line 153, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-header .icon-play {
   -moz-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
@@ -1283,7 +1315,7 @@ input.error {
   -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
-/* line 123, ../sass/application.scss */
+/* line 157, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-header.expanded .icon-play {
   -moz-transform: rotate(90deg);
   -o-transform: rotate(90deg);
@@ -1291,41 +1323,41 @@ input.error {
   -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
 }
-/* line 128, ../sass/application.scss */
+/* line 162, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-date {
   margin-left: 10px;
 }
-/* line 132, ../sass/application.scss */
+/* line 166, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .words {
   text-align: right;
 }
-/* line 135, ../sass/application.scss */
+/* line 169, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .words .hidden {
   display: none;
 }
-/* line 139, ../sass/application.scss */
+/* line 173, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .words input {
   width: 100%;
   text-align: right;
 }
-/* line 144, ../sass/application.scss */
+/* line 178, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .time {
   padding-left: 20px;
 }
-/* line 147, ../sass/application.scss */
+/* line 181, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .progress {
   margin-bottom: 0px;
 }
-/* line 150, ../sass/application.scss */
+/* line 184, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-day-header {
   cursor: pointer;
   margin-bottom: 5px;
 }
-/* line 154, ../sass/application.scss */
+/* line 188, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-day-header:hover {
   background-color: #ddd;
 }
-/* line 158, ../sass/application.scss */
+/* line 192, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .entry-list-day-header .icon-play {
   -moz-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
@@ -1333,23 +1365,23 @@ input.error {
   -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
-/* line 164, ../sass/application.scss */
+/* line 198, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .day .icon-check {
   color: #00B31B;
 }
-/* line 166, ../sass/application.scss */
+/* line 200, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .day .icon-check:hover {
   color: #00D420;
 }
-/* line 170, ../sass/application.scss */
+/* line 204, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .day .icon-remove-sign {
   color: #960202;
 }
-/* line 172, ../sass/application.scss */
+/* line 206, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .day .icon-remove-sign:hover {
   color: #C40000;
 }
-/* line 178, ../sass/application.scss */
+/* line 212, ../sass/application.scss */
 .goal-holder .data-holder .data-holder-row .entries .days {
   margin-bottom: 20px;
 }

@@ -113,7 +113,7 @@ $(function() {
 
 	$('.submit-update-goal').live('click', function(e) {
 		e.preventDefault();
-		/*
+		
 		$.ajax({
 			'url': $('.update-goal').attr('action'),
 			'type': 'POST',
@@ -123,7 +123,7 @@ $(function() {
 				updateGoal($('.update-goal input[name="goal-id"]').val(), data);
 			}
 		})
-		*/
+		
 	})
 
 	$('.submit-delete-goal').live('click', function(e) {

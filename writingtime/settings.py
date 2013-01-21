@@ -41,7 +41,7 @@ USE_TZ = True
 LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
-AUTH_PROFILE_MODULE = 'users.UserProfile'
+#AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
