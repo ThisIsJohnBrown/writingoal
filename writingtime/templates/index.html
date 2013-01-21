@@ -119,11 +119,10 @@
 
 {% else %}
 
-<h3>Log in, please</h3>
 <form action="/" method="POST">
   {% csrf_token %}
-    <input id="username-field" name="username" type="text" placeholder="username" />
-    <input id="password-field" name="password" type="password" placeholder="password"/>
+    <input id="username-field" name="username" type="text" placeholder="username" /></br>
+    <input id="password-field" name="password" type="password" placeholder="password"/></br>
     <input id="tz" name="tz" type="hidden">
     <button class="btn" type="submit">Login</button>
 </form>
