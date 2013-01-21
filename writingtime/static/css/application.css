@@ -1229,8 +1229,8 @@ input.error {
 }
 /* line 82, ../sass/application.scss */
 .goal-holder .goal-bar .progress .subgoal-marker-holder .subgoal-marker.subgoal-end {
-  background-color: green;
-  color: green;
+  background-color: #79A432;
+  color: #79A432;
   margin-left: -3px;
 }
 /* line 88, ../sass/application.scss */
