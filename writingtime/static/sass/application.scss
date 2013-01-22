@@ -64,6 +64,8 @@ input.error {
 
 		.goal-title {
 			margin-left: 0;
+			margin-right: 10px;
+			margin-top: -2px;
 			font-size: 16px;
 		}
 		.progress {
@@ -111,6 +113,9 @@ input.error {
 	.data-holder {
 		background-image: url('/static/img/billie_holiday.png');
 		margin-bottom: 20px;
+		display:inline-block;
+		margin-top:10px;
+		width: 100%;
 		@include border-radius(5px);
 
 		.open-subgoal-modal {
