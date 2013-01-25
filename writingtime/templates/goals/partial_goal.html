@@ -1,5 +1,9 @@
 {% load tz %}
 
+{% if new_goal %}
+<div class="goal-holder" data-goal="{{ goal.id }}">
+{% endif %}
+
 <div data-toggle="collapse" class="goal-bar" data-target="#collapse{{ goal.id }}">
   <div class="span2 goal-title"><span class="btn">{{goal.name}}</span></div>
   <div class="progress progress-striped">
@@ -131,3 +135,7 @@
     </div>
   </div>
 </div>
+
+{% if new_goal %}
+</div>
+{% endif %}

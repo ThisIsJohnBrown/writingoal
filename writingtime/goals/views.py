@@ -19,6 +19,7 @@ import pytz
 @csrf_exempt
 def goal_create(request):
     response_data = {}
+    new_goal = True
     if request.POST:
         #try:
         goal = Goal()

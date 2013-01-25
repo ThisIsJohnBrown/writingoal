@@ -102,8 +102,7 @@ $(function() {
 						console.log($('.goal-holder[data-goal="' + $(that).parents('.modal').find('input[name="subgoal"]').val() + '"]').length);
 						updateGoal($(that).parents('.modal').find('input[name="subgoal"]').val(), data);
 					} else {
-						$('.goals').prepend('<div class="goal-holder"></div>')
-						$('.goals .goal-holder:eq(0)').html(data);
+						$('.goals').prepend(data);
 					}
 				}
 			})
