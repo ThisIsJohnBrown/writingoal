@@ -85,6 +85,22 @@ class Goal(models.Model):
 				num += entry.num_words
 		return num
 
+	def num_completed(self):
+		num = 0
+		if self.parent_goal:
+			if self.end_date:
+				entries = GoalEntry.objects.all().filter(goal=self.parent_goal, entry_date__gte=self.start_date, entry_date__lte=self.end_date)
+			else:
+				entries = GoalEntry.objects.all().filter(goal=self.parent_goal, entry_date__gte=self.start_date)
+			for entry in entries:
+				num += entry.num_words
+			if num > self.num_words:
+				num = self.num_words
+		else:
+			for entry in reversed(self.entries()):
+				num += entry.num_words
+		return num
+
 	def subgoal_target(self):
 		return self.num_written() + self.num_words
 

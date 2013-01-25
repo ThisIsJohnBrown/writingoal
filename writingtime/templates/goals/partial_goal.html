@@ -53,20 +53,28 @@
               <a href="#modal-update-goal" data-name="{{subgoal.name}}" data-words="{{subgoal.num_words}}" data-start="{{subgoal.start_date|date:"m/d/Y"}}" data-end="{{subgoal.end_date|date:"m/d/Y"}}" data-days="{{subgoal.days}}" data-toggle="modal" data-id="{{subgoal.id}}" class="update-goal"><i class="icon-edit"></i></a>
               <a href="#modal-delete-goal" data-toggle="modal" data-id="{{subgoal.id}}" data-subgoal="true" data-parent-id="{{ subgoal.parent_goal.id }}" class="delete-goal"><i class="icon-trash"></i></a>
             </p>
-            {% if subgoal.end_date %}
-              <p class="inset">{{ subgoal.num_words }} words in {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
-              <p class="inset">{{ subgoal.average }} words per day</p>
-              <p class="inset">Progress</p>
-              <p class="inset">{{subgoal.num_written}} words written</p>
-            {% else %}
-              <p class="inset">{{ subgoal.num_written }} of {{ subgoal.num_words }} words</p>
-              <p class="inset">{{ subgoal.average_written }} words per day for {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
+            {% if subgoal.days_until <= 0 %}
+              {% if subgoal.end_date %}
+                <p class="inset">{{ subgoal.num_words }} words in {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
+                <p class="inset">{{ subgoal.average }} words per day</p>
+                <p class="inset">Progress</p>
+                <p class="inset">{{subgoal.num_completed}} words written</p>
+              {% else %}
+                <p class="inset">{{ subgoal.num_completed }} of {{ subgoal.num_words }} words</p>
+                {% if subgoal.num_completed < subgoal.num_words %}
+                  <p class="inset">{{ subgoal.average_written }} words per day for {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
+                {% else %}
+                  <p class="inset">Completed!</p>
+                {% endif %}
+              {% endif %}
             {% endif %}
             {% if subgoal.days_until > 0 %}
+              <p class="inset">{{ subgoal.num_words }} words in {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
+              <p class="inset">{{ subgoal.average }} words per day</p>
               <p class="inset">Starts in {{ subgoal.days_until }} day{{subgoal.days_until|pluralize}}
             {% endif %}
-            <br>
           </div>
+          <br>
         {% endfor %}
       {% endif %}
 
