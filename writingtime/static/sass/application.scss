@@ -4,6 +4,7 @@
 body {
 	#background-image: url('/static/img/gray_jean.png');
 	background-color: #F4F5ED;
+	font-family: 'Arbutus Slab', serif;
 }
 
 .navbar {
@@ -47,14 +48,21 @@ body {
 
 input[type="text"], input[type="password"] {
 	height: 30px;
+	font-family: 'Arbutus Slab', serif;
 }
 
 .new-goal {
 	margin-bottom:20px;
+	padding-left: 0px;
+	padding-right: 0px;
 }
 
 input.error {
 	border-color: red;
+}
+
+.float-right {
+	text-align: right;
 }
 
 .goal-holder {
@@ -118,10 +126,17 @@ input.error {
 		width: 100%;
 		@include border-radius(5px);
 
+		.subgoals-header {
+			cursor: pointer;
+			margin-top: 20px;
+			font-size: 16px;
+			.icon-play {
+				margin-right: 4px;
+			}
+		}
+
 		.open-subgoal-modal {
-			width: 100px;
-			margin-left: 90px;
-			margin-top: 30px;
+			margin-top: 10px;
 		}
 
 		i {
@@ -135,6 +150,23 @@ input.error {
 		.data-holder-row {
 			padding-top:20px;
 			padding-bottom:20px;
+
+			.goal-header {
+				font-size: 24px;
+				margin-left: 26px;
+			}
+
+			.goal-data-right {
+				margin-left: 10px;
+			}
+
+			.goal-data-days {
+				margin-bottom: 15px;
+			}
+
+			.row-fluid [class*="span"] {
+			  min-height: 0px;
+			}
 
 			.summary {
 				padding-left: 60px;
@@ -152,8 +184,15 @@ input.error {
 			}
 
 			.entries {
+
+				.averages {
+					p {
+						margin-bottom: 0px;
+					}
+				}
 				.entry-list-header {
 					cursor: pointer;
+					font-size: 24px;
 
 					.icon-play {
 						@include transition(all 0.2s ease-out);

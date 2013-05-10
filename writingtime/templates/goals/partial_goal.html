@@ -27,80 +27,190 @@
 </div>
  
 <div id="collapse{{ goal.id }}" class="collapse data-holder">
-  <div class="row">
-    <a href="#modal-create-subgoal" role="button" class="span1 btn btn-medium btn-success right open-subgoal-modal" data-toggle="modal" data-goal="{{ goal.id }}">+ New SubGoal</a>
-  </div>
   <div class="row data-holder-row">
     <div class="span5 summary">
-      <p>Goal Summary 
+      <p class="goal-header">Goal 
         <a href="#modal-update-goal" data-name="{{goal.name}}" data-words="{{goal.num_words}}" data-start="{{goal.start_date|date:"m/d/Y"}}" data-end="{{goal.end_date|date:"m/d/Y"}}" data-days="{{goal.days}}" data-time="{{goal.start_date|date:"His"}}" data-toggle="modal" data-id="{{goal.id}}" class="update-goal"><i class="icon-edit"></i></a>
         <a href="#modal-delete-goal" data-toggle="modal" data-id="{{goal.id}}" class="delete-goal"><i class="icon-trash"></i></a>
       </p>
       {% if goal.end_date %}
-        <p class="inset">{{ goal.num_words }} words in {{ goal.days }} day{{goal.days|pluralize}}</p>
-        <p class="inset">{{ goal.average }} words per day</p>
+      <div class="row-fluid">
+        <div class="span3 float-right">
+          {{ goal.num_words }}
+        </div>
+        <div class="span5 goal-data-right">
+          words
+        </div>
+      </div>
+      <div class="row-fluid">
+        <div class="span3 float-right">
+          {{ goal.average }}
+        </div>
+        <div class="span5 goal-data-right">
+          words/day
+        </div>
+      </div>
+      <div class="row-fluid goal-data-days">
+        <div class="span3 float-right">
+          {{ goal.days }}
+        </div>
+        <div class="span5 goal-data-right">
+          days
+        </div>
+      </div>
+      <div class="row-fluid">
+        <div class="span3 float-right">
+          {{goal.start_date|date:"n/j/y"}}
+        </div>
+        <div class="span5 goal-data-right">
+          begins
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span3 float-right">
+          {{goal.end_date|date:"n/j/y"}}
+        </div>
+        <div class="span5 goal-data-right">
+          ends
+        </div>
+      </div>
+      
+
       {% else %}
         <p class="inset">{{ goal.num_written }} of {{ goal.num_words }} words</p>
         <p class="inset">{{ goal.average_written }} words per day for {{ goal.days }} day{{goal.days|pluralize}}</p>
       {% endif %}
-      
-      {% if goal.subgoals %}
-        <p class="title">Subgoals</p>
+      <div class="row-fluid">
+        <div class="span3 float-right">
+          <p class="subgoals-header" data-collapse-name=".subgoals-{{goal.id}}"><i class="icon-play"></i>Subgoals</p>
+        </div>
+      </div>
+      <div class="collapse subgoals-{{goal.id}}">
+        <div class="row-fluid">
+          <div class="span3 offset1">
+            <a href="#modal-create-subgoal" role="button" class="btn btn-mini btn-success right open-subgoal-modal" data-toggle="modal" data-goal="{{ goal.id }}">+ New Subgoal</a>
+          </div>
+          <div class="span5 goal-data-right">
+             
+          </div>
+        </div>
+        </br>
+        {% if goal.subgoals %}
 
-        {% for subgoal in goal.subgoals %}
-          <div class="subgoal-info-holder" data-id="{{ subgoal.id }}">
-            <p class="inset">{{ subgoal.name }}
-              <a href="#modal-update-goal" data-name="{{subgoal.name}}" data-words="{{subgoal.num_words}}" data-start="{{subgoal.start_date|date:"m/d/Y"}}" data-end="{{subgoal.end_date|date:"m/d/Y"}}" data-days="{{subgoal.days}}" data-toggle="modal" data-id="{{subgoal.id}}" class="update-goal"><i class="icon-edit"></i></a>
-              <a href="#modal-delete-goal" data-toggle="modal" data-id="{{subgoal.id}}" data-subgoal="true" data-parent-id="{{ subgoal.parent_goal.id }}" class="delete-goal"><i class="icon-trash"></i></a>
-            </p>
-            
-            {% if subgoal.days_until <= 0 %}
-              {% if subgoal.end_date %}
-                <p class="inset">{{ subgoal.num_words }} words in {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
-                <p class="inset">{{ subgoal.average }} words per day</p>
-                <p class="inset">Progress</p>
-                <p class="inset">{{subgoal.num_completed}} words written</p>
-              {% else %}
-                <p class="inset">{{ subgoal.num_completed }} of {{ subgoal.num_words }} words</p>
-                {% if subgoal.num_completed < subgoal.num_words %}
-                  <p class="inset">{{ subgoal.average_written }} words per day for {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
+          {% for subgoal in goal.subgoals %}
+            <div class="subgoal-info-holder" data-id="{{ subgoal.id }}">
+              <div class="row-fluid">
+                <div class="span12">
+                  <i class="icon-play"></i>{{ subgoal.name }}
+                  <a href="#modal-update-goal" data-name="{{subgoal.name}}" data-words="{{subgoal.num_words}}" data-start="{{subgoal.start_date|date:"m/d/Y"}}" data-end="{{subgoal.end_date|date:"m/d/Y"}}" data-days="{{subgoal.days}}" data-toggle="modal" data-id="{{subgoal.id}}" class="update-goal"><i class="icon-edit"></i></a>
+                  <a href="#modal-delete-goal" data-toggle="modal" data-id="{{subgoal.id}}" data-subgoal="true" data-parent-id="{{ subgoal.parent_goal.id }}" class="delete-goal"><i class="icon-trash"></i></a>
+                </div>
+              </div>
+              
+              {% if subgoal.days_until <= 0 %}
+                {% if subgoal.end_date %}
+                  <div class="row-fluid">
+                    <div class="span3 float-right">
+                      {{ subgoal.num_words }}
+                    </div>
+                    <div class="span5 goal-data-right">
+                      words
+                    </div>
+                  </div>
+                  <div class="row-fluid">
+                    <div class="span3 float-right">
+                      {{ subgoal.average }}
+                    </div>
+                    <div class="span5 goal-data-right">
+                      words/day
+                    </div>
+                  </div>
+                  <div class="row-fluid">
+                    <div class="span3 float-right">
+                      {{ subgoal.days }}
+                    </div>
+                    <div class="span5 goal-data-right">
+                      days
+                    </div>
+                  </div>
+                  <div class="row-fluid goal-data-days">
+                    <div class="span3 float-right">
+                      {{subgoal.num_completed}}
+                    </div>
+                    <div class="span5 goal-data-right">
+                      written
+                    </div>
+                  </div>
+                  <div class="row-fluid">
+                    <div class="span3 float-right">
+                      {{goal.start_date|date:"n/j/y"}}
+                    </div>
+                    <div class="span5 goal-data-right">
+                      begins
+                    </div>
+                  </div>
+
+                  <div class="row-fluid">
+                    <div class="span3 float-right">
+                      {{goal.end_date|date:"n/j/y"}}
+                    </div>
+                    <div class="span5 goal-data-right">
+                      ends
+                    </div>
+                  </div>
+
                 {% else %}
-                  <p class="inset">Completed!</p>
+                  <p class="inset">{{ subgoal.num_completed }} of {{ subgoal.num_words }} words</p>
+                  {% if subgoal.num_completed < subgoal.num_words %}
+                    <p class="inset">{{ subgoal.average_written }} words per day for {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
+                  {% else %}
+                    <p class="inset">Completed!</p>
+                  {% endif %}
                 {% endif %}
               {% endif %}
-            {% endif %}
-            {% if subgoal.days_until > 0 %}
-              <p class="inset">{{ subgoal.num_words }} words in {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
-              <p class="inset">{{ subgoal.average }} words per day</p>
-              <p class="inset">Starts in {{ subgoal.days_until }} day{{subgoal.days_until|pluralize}}
-            {% endif %}
-          </div>
-          <br>
-        {% endfor %}
-      {% endif %}
-
-      {% if goal.days_progress >= 0 and goal.end_date %}
-
-        <p class="title">Progress</p>
-        <p class="inset">{{ goal.num_written }} words written in {{ goal.days_progress }} days</per>
-        <p class="inset">{{ goal.average_written }} words per day
-
-        <p class="title">To Finish</p>
-        <p class="inset">{{ goal.num_remaining }} words and {{ goal.days_remaining }} days left</p>
-        <p class="inset">{{ goal.average_remaining }} words per day</p>
-      {% else %}
-        {% if goal.days_until and goal.end_date%}
-          <p class="title">Starts in {{goal.days_until}} day{{goal.days_until|pluralize}}</p>
+              {% if subgoal.days_until > 0 %}
+                <p class="inset">{{ subgoal.num_words }} words in {{ subgoal.days }} day{{ subgoal.days|pluralize }}</p>
+                <p class="inset">{{ subgoal.average }} words per day</p>
+                <p class="inset">Starts in {{ subgoal.days_until }} day{{subgoal.days_until|pluralize}}
+              {% endif %}
+            </div>
+            <br>
+          {% endfor %}
         {% endif %}
-      {% endif %}
+
+        {% if goal.days_progress >= 0 and goal.end_date %}
+
+          <!-- <p class="title">Progress</p>
+          <p class="inset">{{ goal.num_written }} words written in {{ goal.days_progress }} days</per>
+          <p class="inset">{{ goal.average_written }} words per day
+
+          <p class="title">To Finish</p>
+          <p class="inset">{{ goal.num_remaining }} words and {{ goal.days_remaining }} days left</p>
+          <p class="inset">{{ goal.average_remaining }} words per day</p> -->
+        {% else %}
+          {% if goal.days_until and goal.end_date%}
+            <p class="title">Starts in {{goal.days_until}} day{{goal.days_until|pluralize}}</p>
+          {% endif %}
+        {% endif %}
+      </div>
     </div>
-    <div class="span5 entries">
+    <div class="span6 entries">
       {% if goal.days_progress >= 0 or not goal.end_date %}
-        <div class="input-append">
-          <input class="span2 entry-add-{{goal.id}}" type="text">
-          <button class="btn entry-add btn-success" type="button" data-input-class="input.entry-add-{{goal.id}}" data-goal-id="{{goal.id}}" data-entry-url="{% url entry_create %}" data-entry-list=".entry-list{{goal.id}}">Add words!</button>
+        <div class="row">
+          <div class="span3">
+            <div class="input-append">
+              <input class="span2 entry-add-{{goal.id}}" type="text" />
+              <button class="btn entry-add btn-success" type="button" data-input-class="input.entry-add-{{goal.id}}" data-goal-id="{{goal.id}}" data-entry-url="{% url entry_create %}" data-entry-list=".entry-list{{goal.id}}">Add words!</button> 
+            </div>
+          </div>
+          {% if goal.entries %}
+            <div class="span3 averages">
+              <p>Average per day: {{ goal.average_written }}</p>
+              <p>Average to finish: {{ goal.average_remaining }}</p>
+            </div>
+          {% endif %} 
         </div>
-      
         {% if goal.entries %}
   	      <p class="entry-list-header"><i class="icon-play"></i> Entries</p>
           {% localtime off %}
@@ -143,6 +253,7 @@
       {% endif %}
     </div>
   </div>
+
 </div>
 
 {% if new_goal %}
