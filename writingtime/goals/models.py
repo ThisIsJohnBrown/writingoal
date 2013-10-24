@@ -1,10 +1,39 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
 
 from django.utils.timezone import utc
 
 import datetime, math
 import pytz
+
+DAY_OF_THE_WEEK = {
+    '0' : _(u'Monday'),
+    '1' : _(u'Tuesday'),
+    '2' : _(u'Wednesday'),
+    '3' : _(u'Thursday'),
+    '4' : _(u'Friday'),
+    '5' : _(u'Saturday'),
+    '6' : _(u'Sunday'),
+}
+
+class DayOfTheWeekField(models.CharField):
+    def __init__(self, *args, **kwargs):
+        kwargs['choices']=tuple(sorted(DAY_OF_THE_WEEK.items()))
+        kwargs['max_length']=1 
+        super(DayOfTheWeekField,self).__init__(*args, **kwargs)
+
+class Day(models.Model):
+    day = DayOfTheWeekField(blank=True, null=True)
+
+    def full(self):
+    	return DAY_OF_THE_WEEK[self.day]
+
+    def __unicode__(self):
+    	return DAY_OF_THE_WEEK[self.day]
+
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["^writingtime\.goals\.models\.DayOfTheWeekField"])
 
 class Goal(models.Model):
 	user = models.ForeignKey(User, related_name='user')
@@ -18,6 +47,8 @@ class Goal(models.Model):
 
 	num_words = models.IntegerField(blank=True, null=True)
 
+	week_days = models.ManyToManyField(Day, blank=True, null=True)
+
 	def subgoals(self):
 		return Goal.objects.all().filter(parent_goal=self)
 
@@ -25,6 +56,26 @@ class Goal(models.Model):
 		offset = (datetime.datetime.now().replace(tzinfo=None) - self.start_date.replace(tzinfo=None))
 		return (offset.days*24*60*60 + offset.seconds) > 0 
 
+	def test(self):
+		print "days - %s" % self.days()
+		print "days_remaining - %s" % self.days_remaining()
+		print "days_progress - %s" % self.days_progress()
+		print "days_until - %s" % self.days_until()
+		print "average - %s" % self.average()
+		print "num_written - %s" % self.num_written()
+		print "num_completed - %s" % self.num_completed()
+		print "subgoal_target - %s" % self.subgoal_target()
+		print "average_written - %s" % self.average_written()
+		print "num_remaining - %s" % self.num_remaining()
+		print "average_remaining - %s" % self.average_remaining()
+		print "percent_actual - %s" % self.percent_actual()
+		#print "percent_actual_subgoal_end - %s" % self.percent_actual_subgoal_end()
+		#print "percent_subgoal_progress - %s" % self.percent_subgoal_progress()
+		print "percent_goal - %s" % self.percent_goal()
+		print "percent_diff - %s" % self.percent_diff()
+		print "words_behind - %s" % self.words_behind()
+		print "words_ahead - %s" % self.words_ahead()
+		print "words_goal - %s" % self.words_goal()
 
 	def entries(self):
 		goal_entries = list(GoalEntry.objects.all().filter(goal=self).order_by('-entry_date'))
@@ -45,25 +96,37 @@ class Goal(models.Model):
 		return goal_entries
 	
 	def days(self):
+		num_days = 0
+		goal_days = []
+		for d in list(self.week_days.all()):
+			goal_days.append(int(d.day))
 		if self.end_date:
-			return (self.end_date - self.start_date).days
+			daygenerator = (self.start_date + datetime.timedelta(x) for x in xrange((self.end_date - self.start_date).days + 1))
 		else:
-			return (datetime.datetime.now().replace(tzinfo=None) - self.start_date.replace(tzinfo=None)).days + 1
+			daygenerator = (self.start_date + datetime.timedelta(x) for x in xrange((datetime.datetime.now().replace(tzinfo=None) - self.start_date.replace(tzinfo=None)).days + 1))
+		num_days = sum(1 for day in daygenerator if day.weekday() in goal_days)
+		return num_days
 
 	def days_remaining(self):
 		if self.end_date:
-			return (self.end_date.date() - datetime.datetime.now().date()).days
+			num_days = 0
+			goal_days = []
+			for d in list(self.week_days.all()):
+				goal_days.append(int(d.day))
+			daygenerator = (datetime.datetime.now().date() + datetime.timedelta(x) for x in xrange((self.end_date.date() - datetime.datetime.now().date()).days))
+			num_days = sum(1 for day in daygenerator if day.weekday()+1 in goal_days)
+			return num_days
 		else:
 			return 0
 
 	def days_progress(self):
 		if self.days():
-			return self.days() - self.days_remaining()
+			return self.days() - self.days_remaining() + 1
 		else:
 			return -1
 
 	def days_until(self):
-		if self.start_date:
+		if self.start_date and self.parent_goal:
 			return (self.start_date.date() - datetime.datetime.now().date()).days
 		else:
 			return False
@@ -102,13 +165,18 @@ class Goal(models.Model):
 		return num
 
 	def subgoal_target(self):
-		return self.num_written() + self.num_words
+		if self.parent_goal:
+			return self.num_written() + self.num_words
+		else:
+			return False
 
 	def average_written(self):
 		if not self.end_date:
 			return self.num_written()/self.days()
-		elif self.days_progress():
+		elif self.days_progress() and self.days_remaining() > 0:
 			return self.num_written()/self.days_progress()
+		elif self.days_remaining() <= 0:
+			return self.num_written()/self.days()
 		else:
 			return 0
 
@@ -116,7 +184,7 @@ class Goal(models.Model):
 		return self.num_words - self.num_written()
 
 	def average_remaining(self):
-		if self.days_remaining():
+		if self.days_remaining() > -1 and self.days_remaining() != 0:
 			return self.num_remaining()/self.days_remaining()
 		else:
 			return 0
