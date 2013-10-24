@@ -103,7 +103,7 @@ class Goal(models.Model):
 		if self.end_date:
 			daygenerator = (self.start_date + datetime.timedelta(x) for x in xrange((self.end_date - self.start_date).days + 1))
 		else:
-			daygenerator = (self.start_date + datetime.timedelta(x) for x in xrange((datetime.datetime.now().replace(tzinfo=None) - self.start_date.replace(tzinfo=None)).days + 1))
+			daygenerator = (self.start_date.replace(tzinfo=None) + datetime.timedelta(x) for x in xrange((datetime.datetime.now().replace(tzinfo=None) - self.start_date.replace(tzinfo=None)).days + 1))
 		num_days = sum(1 for day in daygenerator if day.weekday() in goal_days)
 		return num_days
 

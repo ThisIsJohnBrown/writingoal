@@ -80,6 +80,7 @@
       {% else %}
         <p class="inset">{{ goal.num_written }} of {{ goal.num_words }} words</p>
         <p class="inset">{{ goal.average_written }} words per day for {{ goal.days }} day{{goal.days|pluralize}}</p>
+        <p class="inset">({% for day in goal.week_days.all%}{% if forloop.counter > 1 %}, {% endif %}{{ day.full|slice:":2" }}{% endfor %})</p>
       {% endif %}
       <div class="row-fluid">
         <div class="span3 float-right">
