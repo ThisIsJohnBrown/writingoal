@@ -1,10 +1,39 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
 
 from django.utils.timezone import utc
 
 import datetime, math
 import pytz
+
+DAY_OF_THE_WEEK = {
+    '0' : _(u'Monday'),
+    '1' : _(u'Tuesday'),
+    '2' : _(u'Wednesday'),
+    '3' : _(u'Thursday'),
+    '4' : _(u'Friday'),
+    '5' : _(u'Saturday'),
+    '6' : _(u'Sunday'),
+}
+
+class DayOfTheWeekField(models.CharField):
+    def __init__(self, *args, **kwargs):
+        kwargs['choices']=tuple(sorted(DAY_OF_THE_WEEK.items()))
+        kwargs['max_length']=1 
+        super(DayOfTheWeekField,self).__init__(*args, **kwargs)
+
+class Day(models.Model):
+    day = DayOfTheWeekField(blank=True, null=True)
+
+    def full(self):
+    	return DAY_OF_THE_WEEK[self.day]
+
+    def __unicode__(self):
+    	return DAY_OF_THE_WEEK[self.day]
+
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["^writingtime\.goals\.models\.DayOfTheWeekField"])
 
 class Goal(models.Model):
 	user = models.ForeignKey(User, related_name='user')
@@ -17,6 +46,8 @@ class Goal(models.Model):
 	end_date = models.DateTimeField(blank=True, null=True)
 
 	num_words = models.IntegerField(blank=True, null=True)
+
+	week_days = models.ManyToManyField(Day, blank=True, null=True)
 
 	def subgoals(self):
 		return Goal.objects.all().filter(parent_goal=self)
@@ -65,14 +96,26 @@ class Goal(models.Model):
 		return goal_entries
 	
 	def days(self):
+		num_days = 0
+		goal_days = []
+		for d in list(self.week_days.all()):
+			goal_days.append(int(d.day))
 		if self.end_date:
-			return (self.end_date - self.start_date).days + 1
+			daygenerator = (self.start_date + datetime.timedelta(x) for x in xrange((self.end_date - self.start_date).days + 1))
 		else:
-			return (datetime.datetime.now().replace(tzinfo=None) - self.start_date.replace(tzinfo=None)).days + 1
+			daygenerator = (self.start_date.replace(tzinfo=None) + datetime.timedelta(x) for x in xrange((datetime.datetime.now().replace(tzinfo=None) - self.start_date.replace(tzinfo=None)).days + 1))
+		num_days = sum(1 for day in daygenerator if day.weekday() in goal_days)
+		return num_days
 
 	def days_remaining(self):
 		if self.end_date:
-			return (self.end_date.date() - datetime.datetime.now().date()).days
+			num_days = 0
+			goal_days = []
+			for d in list(self.week_days.all()):
+				goal_days.append(int(d.day))
+			daygenerator = (datetime.datetime.now().date() + datetime.timedelta(x) for x in xrange((self.end_date.date() - datetime.datetime.now().date()).days))
+			num_days = sum(1 for day in daygenerator if day.weekday()+1 in goal_days)
+			return num_days
 		else:
 			return 0
 
