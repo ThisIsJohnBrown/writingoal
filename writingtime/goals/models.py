@@ -113,8 +113,12 @@ class Goal(models.Model):
 			goal_days = []
 			for d in list(self.week_days.all()):
 				goal_days.append(int(d.day))
-			daygenerator = (datetime.datetime.now().date() + datetime.timedelta(x) for x in xrange((self.end_date.date() - datetime.datetime.now().date()).days))
-			num_days = sum(1 for day in daygenerator if day.weekday()+1 in goal_days)
+			days = (self.end_date.date() - datetime.datetime.now().date()).days
+			if datetime.datetime.now() < self.start_date.replace(tzinfo=None):
+				days = (self.end_date.date() - self.start_date.date()).days
+
+			daygenerator = (datetime.datetime.now().date() + datetime.timedelta(x) for x in xrange(days))
+			num_days = sum(1 for day in daygenerator if day.weekday() in goal_days)
 			return num_days
 		else:
 			return 0
