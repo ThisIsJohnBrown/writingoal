@@ -121,7 +121,7 @@ class Goal(models.Model):
 
 	def days_progress(self):
 		if self.days():
-			return self.days() - self.days_remaining() + 1
+			return self.days() - self.days_remaining()
 		else:
 			return -1
 
