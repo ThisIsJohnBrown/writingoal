@@ -47,7 +47,7 @@ class Goal(models.Model):
 
 	num_words = models.IntegerField(blank=True, null=True)
 
-	week_days = models.ManyToManyField(Day, blank=True, null=True)
+	week_days = models.ManyToManyField(Day, blank=True, null=True, default=[0])
 
 	def subgoals(self):
 		return Goal.objects.all().filter(parent_goal=self)
@@ -176,7 +176,10 @@ class Goal(models.Model):
 
 	def average_written(self):
 		if not self.end_date:
-			return self.num_written()/self.days()
+			if self.days():
+				return self.num_written()/self.days()
+			else:
+				return self.num_written()
 		elif self.days_progress() and self.days_remaining() > 0:
 			return self.num_written()/self.days_progress()
 		elif self.days_remaining() <= 0:

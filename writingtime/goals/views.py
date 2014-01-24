@@ -60,6 +60,7 @@ def goal_create(request):
             except:
                 pass
             goal.save()
+            goal.week_days = [1, 2, 3, 4, 5]
             goal = Goal.objects.get(id=goal.id)
 
         return render_to_response('goals/partial_goal.html', locals(), context_instance=RequestContext(request))
