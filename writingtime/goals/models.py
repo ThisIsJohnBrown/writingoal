@@ -47,7 +47,7 @@ class Goal(models.Model):
 
 	num_words = models.IntegerField(blank=True, null=True)
 
-	week_days = models.ManyToManyField(Day, blank=True, null=True, default=[0])
+	week_days = models.ManyToManyField(Day, blank=True, null=True, default=[0, 1, 2, 3, 4, 5, 6])
 
 	def subgoals(self):
 		return Goal.objects.all().filter(parent_goal=self)
@@ -105,7 +105,7 @@ class Goal(models.Model):
 		else:
 			daygenerator = (self.start_date.replace(tzinfo=None) + datetime.timedelta(x) for x in xrange((datetime.datetime.now().replace(tzinfo=None) - self.start_date.replace(tzinfo=None)).days + 1))
 		num_days = sum(1 for day in daygenerator if day.weekday() in goal_days)
-		return num_days
+		return num_days + 1
 
 	def days_remaining(self):
 		if self.end_date:

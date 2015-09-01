@@ -21,7 +21,6 @@ def index(request):
     request.session['django_timezone'] = pytz.timezone('US/Pacific')
     if request.user.is_authenticated():
         goals = Goal.objects.all().filter(user=request.user, parent_goal=None).order_by('-start_date')
-        print goals[0].test()
     else:
         if request.POST:
             username = request.POST['username']
