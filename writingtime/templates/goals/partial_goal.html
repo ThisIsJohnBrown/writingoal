@@ -197,8 +197,8 @@
       </div>
     </div>
     <div class="span6 entries">
-
-      {% if goal.days_progress >= 0 or not goal.end_date %}
+      {% if goal.in_progress or not goal.end_date %}
+        
         <div class="row">
           <div class="span3">
             <div class="input-append">

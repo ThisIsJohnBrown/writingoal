@@ -77,6 +77,12 @@ class Goal(models.Model):
 		print "words_ahead - %s" % self.words_ahead()
 		print "words_goal - %s" % self.words_goal()
 
+	def in_progress(self):
+		if (self.start_date.date() - datetime.datetime.now().date()).days <= 0:
+			return True
+		else:
+			return False
+
 	def entries(self):
 		goal_entries = list(GoalEntry.objects.all().filter(goal=self).order_by('-entry_date'))
 		day = '0'
@@ -105,7 +111,7 @@ class Goal(models.Model):
 		else:
 			daygenerator = (self.start_date.replace(tzinfo=None) + datetime.timedelta(x) for x in xrange((datetime.datetime.now().replace(tzinfo=None) - self.start_date.replace(tzinfo=None)).days + 1))
 		num_days = sum(1 for day in daygenerator if day.weekday() in goal_days)
-		return num_days + 1
+		return num_days
 
 	def days_remaining(self):
 		if self.end_date:
@@ -124,10 +130,12 @@ class Goal(models.Model):
 			return 0
 
 	def days_progress(self):
-		if self.days():
-			return self.days() - self.days_remaining()
+		d = self.days()
+		return d - self.days_remaining()
+		if d:
+			return d - self.days_remaining()
 		else:
-			return -1
+			return -10
 
 	def days_until(self):
 		if self.start_date and self.parent_goal:
@@ -137,7 +145,10 @@ class Goal(models.Model):
 
 	def average(self):
 		if self.end_date:
-			return self.num_words / self.days()
+			d = self.days()
+			if d == 0:
+				d = 1
+			return self.num_words / d
 		else:
 			return False
 	
